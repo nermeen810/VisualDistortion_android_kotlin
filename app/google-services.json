@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "270233990994",
+    "project_id": "visual-amanah-jaddah",
+    "storage_bucket": "visual-amanah-jaddah.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270233990994:android:46a65640eb1f8af95f6c8b",
+        "android_client_info": {
+          "package_name": "com.rino.visualdestortion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270233990994-1bq7gehr895bk6ni3p0mnu2lagd5uh67.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rino.visualdestortion",
+            "certificate_hash": "4ef6291bc99ef2e7587d5a35b7ea8f37c18eea7c"
+          }
+        },
+        {
+          "client_id": "270233990994-r957o7svcokog787i7q201scev35cjbc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGt9ZuSeNMnx02Do9nOqJ-tYsBPK78_xs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270233990994-r957o7svcokog787i7q201scev35cjbc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "270233990994-phr1ijkg3ndr5ej7t6qdj2tlq56mm9pj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.visual.amanatJeddah"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -28,35 +28,34 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/periodTimeTextInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/marginTextField"
-                android:layout_marginBottom="25dp"
-                android:layout_marginTop="25dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mSearch"
-                android:layoutDirection="rtl"
-                android:textDirection="rtl"
-                >
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/periodTimeTextInputLayout"-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="@dimen/marginTextField"-->
+<!--                android:layout_marginBottom="25dp"-->
+<!--                android:layout_marginTop="25dp"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/mSearch"-->
+<!--                android:layoutDirection="rtl"-->
+<!--                android:textDirection="rtl"-->
+<!--                >-->
 
-                <AutoCompleteTextView
-                    android:id="@+id/periodTimeTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="none"
-                    android:layoutDirection="rtl"
-                    android:text="@string/period_time"
-                    android:textColor="@color/black"
-                    android:textDirection="rtl"
-                    android:textSize="@dimen/newsMoreTextSize" />
+<!--                <AutoCompleteTextView-->
+<!--                    android:id="@+id/periodTimeTextView"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:inputType="none"-->
+<!--                    android:layoutDirection="rtl"-->
+<!--                    android:text="@string/period_time"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textDirection="rtl"-->
+<!--                    android:textSize="@dimen/newsMoreTextSize" />-->
 
-            </com.google.android.material.textfield.TextInputLayout>
-
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
 
             <TextView
                 android:id="@+id/serviceTitle"
@@ -72,7 +71,21 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/periodTimeTextInputLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/mSearch" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/period_recycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/paddingLayout"
+                tools:listitem="@layout/period_item"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                android:textDirection="rtl"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/serviceTitle"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -167,6 +180,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/paddingLayout"
                     android:orientation="vertical">
 
                     <include layout="@layout/main_card_shimmer_item" />
@@ -203,17 +217,14 @@
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/service_history_item" />
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                />
+
         </LinearLayout>
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical|center_horizontal"
 
+        />
 </FrameLayout>

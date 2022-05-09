@@ -69,7 +69,7 @@ class HistoryByServiceViewModel(application: Application) : AndroidViewModel(app
         }
     }
     fun searchHistoryDataByService(searchRequest: SearchRequest) {
-        // _loading.postValue(View.VISIBLE)
+         _loading.postValue(View.VISIBLE)
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = modelRepository.searchHistoryDataByService(searchRequest)) {
                 is Result.Success -> {

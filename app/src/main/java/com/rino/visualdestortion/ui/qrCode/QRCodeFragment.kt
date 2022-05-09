@@ -67,6 +67,10 @@ class QRCodeFragment : Fragment() {
             url = getArguments()?.get("QRCodeURL").toString()
             serviceId = getArguments()?.get("serviceID").toString()
             serviceName = getArguments()?.get("serviceName").toString()
+            val source = arguments?.get("source").toString()
+            if(source.equals("history")){
+                binding.backImg.visibility = View.GONE
+            }
             Log.e("QRCodeURL", url)
             if(NetworkConnection.checkInternetConnection(requireContext())){
                 downloadQRCode(url)

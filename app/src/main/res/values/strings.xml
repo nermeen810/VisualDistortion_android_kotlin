@@ -94,6 +94,7 @@
     <string name="day">اليوم</string>
     <string name="full_address">"العنوان "</string>
     <string name="task">عملية</string>
+    <string name="Authentication_Cancelled">تم الغاء البصمة برجاء تسجيل الدخول مرة اخرى</string>
 
 
 </resources>

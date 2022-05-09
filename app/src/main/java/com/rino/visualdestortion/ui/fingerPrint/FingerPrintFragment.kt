@@ -87,10 +87,9 @@ class FingerPrintFragment : Fragment() {
         checkBiometricSupport()
         val biometricPrompt = BiometricPrompt.Builder(requireActivity())
             .setTitle("Title of Prompt")
-            .setSubtitle("Subtitle")
             .setDescription("Uses FP")
             .setNegativeButton("Cancel", requireActivity().mainExecutor, DialogInterface.OnClickListener { dialog, which ->
-                notifyErrorToUser("Authentication Cancelled")
+                notifyErrorToUser(getString(R.string.Authentication_Cancelled))
                 viewModel.logout()
                 navgateToLogin()
             }).build()
@@ -118,7 +117,7 @@ class FingerPrintFragment : Fragment() {
     private fun getCancellationSignal(): CancellationSignal {
         cancellationSignal = CancellationSignal()
         cancellationSignal?.setOnCancelListener {
-            notifyMsgToUser("Authentication was cancelled by the user")
+            notifyMsgToUser(getString(R.string.Authentication_Cancelled))
             viewModel.logout()
             navgateToLogin()
         }

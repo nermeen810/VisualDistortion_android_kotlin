@@ -19,7 +19,7 @@
             <ImageView
                 android:id="@+id/img_header"
                 android:layout_width="match_parent"
-                android:layout_height="285dp"
+                android:layout_height="275dp"
                 android:background="@color/teal"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -113,7 +113,7 @@
                             android:id="@+id/serviceNumValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/paddingText"
+                            android:layout_marginRight="@dimen/paddingLayout"
                             android:padding="4dp"
                             android:textColor="@color/dark_gray"
                             android:textSize="@dimen/normalTextSize"
@@ -139,7 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/paddingText"
-                            android:layout_marginRight="27dp"
+                            android:layout_marginRight="6dp"
                             android:maxWidth="250dp"
                             android:maxLines="2"
                             android:padding="4dp"
@@ -247,12 +247,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/paddingLayout"
                 android:maxWidth="400dp"
+                android:textDirection="rtl"
                 android:padding="@dimen/paddingLayout"
                 android:text=""
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/normalTextSize"
                 android:textStyle="bold"
-                app:layout_constraintRight_toRightOf="@id/workerTypeRecycle"
+                app:layout_constraintRight_toRightOf="@id/notesTxt"
                 app:layout_constraintTop_toBottomOf="@+id/notesTxt" />
 
 <!--            <TextView-->

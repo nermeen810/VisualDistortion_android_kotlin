@@ -14,7 +14,10 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.Looper
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -26,6 +29,7 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.isGone
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -52,6 +56,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -94,6 +99,10 @@ class AddServiceFragment : Fragment() {
     private lateinit var  beforePopup :PopupWindow
     private lateinit var  duringPopup :PopupWindow
     private lateinit var  afterPopup  :PopupWindow
+    private var fileName = "photo"
+    private var currentPhotoPath = ""
+    private lateinit var imageFile:File
+    private lateinit var bitmap:Bitmap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fusedLocationProviderClient =
@@ -201,9 +210,7 @@ class AddServiceFragment : Fragment() {
 
     private fun duringPicOnClick() {
         if (isExternalStoragePermissionGranted()&&isCameraPermissionGranted()) {
-          //  showDuringPopup()
-            enableGallery(AFTER_GALLERY_REQUEST_CODE)
-
+            showDuringPopup()
         } else {
             navigateToAppSetting()
         }
@@ -216,28 +223,29 @@ class AddServiceFragment : Fragment() {
     }
     private fun enableCamera(CAMERA_REQUEST_CODE:Int) {
 
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//        val f = File(Environment.getExternalStorageDirectory(), "image.jpg")
-//        if (f.exists()) {
-//            f.delete()
-//        }
-//        val mImageCaptureUri = Uri.fromFile(f)
-//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri)
-        startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
+        val storageDirectory: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        try {
+            imageFile = File.createTempFile(fileName,".jpg",storageDirectory)
+            currentPhotoPath = imageFile.absolutePath
+            val uri: Uri? = context?.let { it1 -> FileProvider.getUriForFile(it1,"com.rino.visualdestortion.fileprovider",imageFile) }
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,uri)
+            startActivityForResult(cameraIntent,CAMERA_REQUEST_CODE)
+        }catch(e:IOException){
+            print(e.stackTrace)
+        }
+
     }
 
     private fun submit() {
         formData = getFormDataFromUi(serviceName)
            if (validateData(formData) && lat != "" && lng != "") {
-//               val date =
-//                   DateFormat.getDateInstance().format(Calendar.getInstance().time).toString()
                if(NetworkConnection.checkInternetConnection(requireContext())){
                     viewModel.setFormData(formData)
                }
                else{
                     showMessage(getString(R.string.no_internet))
                }
-          //       viewModel.getDailyPreparationByServiceID(serviceTypeId.toString(), date)
            }
     }
 
@@ -281,8 +289,7 @@ class AddServiceFragment : Fragment() {
 
     private fun afterPicOnClick() {
         if (isExternalStoragePermissionGranted()&&isCameraPermissionGranted()) {
-        //    showAfterPopup()
-            enableGallery(AFTER_GALLERY_REQUEST_CODE)
+            showAfterPopup()
         } else {
             navigateToAppSetting()
         }
@@ -290,8 +297,8 @@ class AddServiceFragment : Fragment() {
 
     private fun beforePicOnClick() {
         if (isExternalStoragePermissionGranted()&&isCameraPermissionGranted()) {
-        //    showBeforePopup()
-            enableGallery(BEFORE_GALLERY_REQUEST_CODE)
+            showBeforePopup()
+
         } else {
             navigateToAppSetting()
         }
@@ -432,7 +439,7 @@ class AddServiceFragment : Fragment() {
     }
 
     private fun navigateToQRCode(qrCode: String) {
-        val action = AddServiceFragmentDirections.actionAddServiceToQRCode(qrCode,serviceName,serviceTypeId.toString())
+        val action = AddServiceFragmentDirections.actionAddServiceToQRCode(qrCode,"form",serviceName,serviceTypeId.toString())
         findNavController().navigate(action)
     }
 
@@ -661,8 +668,6 @@ class AddServiceFragment : Fragment() {
             binding.streetTextInputLayout.isErrorEnabled = false
             flagStreet = true
         }
-        //binding.beforPic.drawable == resources.getDrawable(R.drawable.picture)
-        // Toast.makeText(requireContext(),"Before : ${beforeImgBody == null}  ,Aftar : ${afterImgBody == null}",Toast.LENGTH_SHORT).show()
         if (beforeImgBody == null) {
             binding.textInputbeforeImg.error = getString(R.string.required)
             flagBeforeImg = false
@@ -768,15 +773,16 @@ class AddServiceFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == AFTER_CAMERA_REQUEST_CODE && data != null) {
-            val bitmap = data.extras?.get("data") as Bitmap
-            binding.afterPic.setImageBitmap(bitmap)
-           val afterBitmap = resizeBitmap(getRealPathFromURI(getImageUri(requireContext(), bitmap,"AFTER_IMG")))
-            setAfterImage(afterBitmap)
+        if (resultCode == Activity.RESULT_OK && requestCode == AFTER_CAMERA_REQUEST_CODE) {
+          //  val bitmap = data.extras?.get("data") as Bitmap
+              bitmap = BitmapFactory.decodeFile(currentPhotoPath)
+              binding.afterPic.setImageBitmap(bitmap)
+              setAfterImage(bitmap)
+
+
         }
-        if (resultCode == Activity.RESULT_OK && requestCode == AFTER_GALLERY_REQUEST_CODE && data != null) {
+        if (resultCode == Activity.RESULT_OK && requestCode == AFTER_GALLERY_REQUEST_CODE) {
             binding.afterPic.setImageURI(data?.data) // handle chosen image
-            //    var bitmap = data?.data as Bitmap
             val bitmap = MediaStore.Images.Media.getBitmap(
                 requireContext().getContentResolver(),
                 data?.data
@@ -784,7 +790,7 @@ class AddServiceFragment : Fragment() {
             setAfterImage(bitmap)
         }
 
-        if (resultCode == Activity.RESULT_OK && requestCode == BEFORE_GALLERY_REQUEST_CODE && data !=null) {
+        if (resultCode == Activity.RESULT_OK && requestCode == BEFORE_GALLERY_REQUEST_CODE) {
             binding.beforPic.setImageURI(data?.data) // handle chosen image
             //    var bitmap = data?.data as Bitmap
             val bitmap = MediaStore.Images.Media.getBitmap(
@@ -794,14 +800,15 @@ class AddServiceFragment : Fragment() {
             setBeforeImage(bitmap)
             }
 
-        if (resultCode == Activity.RESULT_OK && requestCode == BEFORE_CAMERA_REQUEST_CODE && data != null) {
-            val bitmap = data.extras?.get("data") as Bitmap
+        if (resultCode == Activity.RESULT_OK && requestCode == BEFORE_CAMERA_REQUEST_CODE) {
+        //    val bitmap = data.extras?.get("data") as Bitmap
+            bitmap = BitmapFactory.decodeFile(currentPhotoPath)
             binding.beforPic.setImageBitmap(bitmap)
-            val beforeBitmap = resizeBitmap(getRealPathFromURI(getImageUri(requireContext(), bitmap,"BEFORE_IMG")))
-            setBeforeImage(beforeBitmap)
+            setBeforeImage(bitmap)
+
         }
 
-        if (resultCode == Activity.RESULT_OK && requestCode == DURING_GALLERY_REQUEST_CODE&& data != null) {
+        if (resultCode == Activity.RESULT_OK && requestCode == DURING_GALLERY_REQUEST_CODE) {
             binding.duringPic.setImageURI(data?.data) // handle chosen image
             //    var bitmap = data?.data as Bitmap
             val bitmap = MediaStore.Images.Media.getBitmap(
@@ -810,11 +817,12 @@ class AddServiceFragment : Fragment() {
             )
             setDuringImage(bitmap)
         }
-        if (resultCode == Activity.RESULT_OK && requestCode == DURING_CAMERA_REQUEST_CODE && data != null) {
-            val bitmap = data.extras?.get("data") as Bitmap
+        if (resultCode == Activity.RESULT_OK && requestCode == DURING_CAMERA_REQUEST_CODE ) {
+//            val bitmap = data.extras?.get("data") as Bitmap
+            bitmap = BitmapFactory.decodeFile(currentPhotoPath)
             binding.duringPic.setImageBitmap(bitmap)
-            val duringBitmap = resizeBitmap(getRealPathFromURI(getImageUri(requireContext(), bitmap,"DURING_IMG")))
-            setDuringImage(duringBitmap)
+            setDuringImage(bitmap)
+
         }
         }
 
@@ -831,10 +839,6 @@ class AddServiceFragment : Fragment() {
                 )
             duringBitmap = compressBitmap(duringBitmap,30)
             try {
-
-//                val file = File(
-//                    getRealPathFromURI(data?.data)
-//                )
                 val file =
                     File(getRealPathFromURI(getImageUri(requireContext(), duringBitmap,"DURING_IMG_")))
                 println("duringFilePath" + file.path)
@@ -866,13 +870,8 @@ class AddServiceFragment : Fragment() {
             beforeBitmap = compressBitmap(beforeBitmap,30)
 
             try {
-
-//                val file = File(
-//                    getRealPathFromURI(data?.data)
-//                )
                 val file =
                     File(getRealPathFromURI(getImageUri(requireContext(), beforeBitmap,"bEFORE_IMG")))
-//                        println("beforefilePath" + file.path)
                 val requestFile: RequestBody =
                     file
                         .asRequestBody("multipart/form-data".toMediaTypeOrNull())
@@ -938,31 +937,23 @@ private  fun  resizeBitmap(imagePath:String?):Bitmap{
     private fun drawTextToBitmap(bitmap: Bitmap, text: String): Bitmap {
 
         val canvas = Canvas(bitmap)
-        // new antialised Paint - empty constructor does also work
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         val width: Int = bitmap.width
         val  height: Int = bitmap.height
 
-        // text size in pixels
-
         paint.textSize = width * .05f
 
-        //custom fonts or a default font
         paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         val fm: Paint.FontMetrics = Paint.FontMetrics()
-    //    val color = ContextCompat.getColor(requireContext(), R.color.transparent_black)
         paint.setARGB(50,51,26,24)
         paint.getFontMetrics(fm)
-        val margin = 5f
         canvas.drawRect(
             0f, 0f,
             width.toFloat(), width*.10f,paint
         )
         val original = BitmapFactory.decodeResource(resources, R.drawable.splash_icon)
         canvas.drawBitmap(original,null,RectF(width*.02f,width*.02f,width*.10f,width*.10f),null)
-        // draw text to the Canvas center
         val bounds = Rect()
-        //draw the text
         paint.getTextBounds(text, 0, text.length, bounds)
         paint.color = Color.WHITE
         canvas.drawText(text, width*.15f, width*.07f, paint)
@@ -1025,7 +1016,6 @@ private  fun  resizeBitmap(imagePath:String?):Bitmap{
                 enableLocationPermission()
             }
         } else {
-          //    navigateToAppSetting()
             requestPermission()
 
         }
@@ -1073,17 +1063,6 @@ private  fun  resizeBitmap(imagePath:String?):Bitmap{
             1
         )
     }
-
-//    //camera permission
-//    @SuppressLint("MissingPermission")
-//    fun checkCameraPermission() {
-//        if (!isCameraPermissionGranted()) {
-//            navigateToAppSetting()
-//        } else {
-//           sho
-//        }
-//    }
-
     private fun isCameraPermissionGranted(): Boolean {
         return ActivityCompat.checkSelfPermission(
             requireActivity().application,
@@ -1097,24 +1076,6 @@ private  fun  resizeBitmap(imagePath:String?):Bitmap{
             data = Uri.fromParts("package", requireContext().packageName, null)
         })
     }
-
-
-//
-//    //external storage
-//    @SuppressLint("MissingPermission")
-//    fun checkExternalStoragePermission() {
-//        if (!isExternalStoragePermissionGranted()) {
-//            navigateToAppSetting()
-//        } else {
-//            showBeforePopup()
-//        }
-//    }
-
-//    private fun enablePhotoes() {
-//        val intent = Intent(Intent.ACTION_PICK)
-//        intent.type = "image/*"
-//        startActivityForResult(intent, REQUEST_CODE)
-//    }
 
     private fun isExternalStoragePermissionGranted(): Boolean {
         return ActivityCompat.checkSelfPermission(
@@ -1143,36 +1104,23 @@ private  fun  resizeBitmap(imagePath:String?):Bitmap{
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
-//                    if (activity != null) {
-//                        activity!!.runOnUiThread {
-//                            showMessage(getString(R.string.internet))                        }
-//                    }
+                                Toast.makeText(
+                                    context, getString(R.string.internet),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                 }
 
                 override fun onLost(network: Network) {
                     super.onLost(network)
                     if (activity != null) {
                         activity!!.runOnUiThread {
-//                                Toast.makeText(
-//                                    context, "لا يوجد انترنت ",
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
                             showMessage(getString(R.string.no_internet))                        }
                     }
                 }
             }
         )
     }
-//    val requestExternalStoragePermissionLauncher =
-//        registerForActivityResult(
-//            ActivityResultContracts.RequestPermission()
-//        ) { isGranted: Boolean ->
-//            if (!isGranted) {
-//
-//            } else {
-//
-//            }
-//        }
-
 
 }
+
+

@@ -141,6 +141,10 @@
             app:argType="string"
             android:defaultValue="http://sohamerp.com/avo/avo_privacy_policy.html"/>
         <argument
+            android:name="source"
+            app:argType="string"
+          />
+        <argument
             android:name="serviceName"
             app:argType="string"
             android:defaultValue=""/>
@@ -157,7 +161,7 @@
         <action
             android:id="@+id/action_QRCode_to_AddForm"
             app:destination="@id/addServiceFragment"
-            app:popUpTo="@id/addServiceFragment"
+            app:popUpTo="@id/servicesFragment"
             app:popEnterAnim="@anim/right_to_left"
             />
     </fragment>

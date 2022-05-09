@@ -727,7 +727,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     when(refreshResponse){
                         is Result.Success -> {
                             Log.i("refresh token :", "${refreshResponse.data}")
-                            isDailyPrepared()
+                            result = isDailyPrepared()
 
                         }
                         is Result.Error -> {

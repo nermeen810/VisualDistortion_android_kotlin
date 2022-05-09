@@ -91,7 +91,7 @@ class ServiceDetailsFragment : Fragment() {
     }
 
     private fun navToQrCode(qrCodeUrl: String?) {
-        val action = ServiceDetailsFragmentDirections.actionServiceDetailsToQrCode(qrCodeUrl?:"")
+        val action = ServiceDetailsFragmentDirections.actionServiceDetailsToQrCode(qrCodeUrl?:"","history")
         findNavController().navigate(action)
     }
 

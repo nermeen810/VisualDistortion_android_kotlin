@@ -29,21 +29,21 @@ class SplashViewModel (application: Application) : AndroidViewModel(application)
         get() = _setError
 
     fun isTodayPrepared(){
-
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = modelRepository.isDailyPrepared()) {
                 is Result.Success -> {
                   //  _loading.postValue(View.GONE)
                     Log.i("login:", "${result.data}")
-                    if (result.data?.isPrepared == true) {
-                        withContext(Dispatchers.Main) {
-                            _isPrepared.postValue(true)
-                            Log.i("isPrepared:", (result.data?.isPrepared ?: true).toString())
-                        }
-                    }
-                    else{
-                        _isPrepared.postValue(false)
-                    }
+                    _isPrepared.postValue( result.data?.isPrepared ?:false)
+//                    if (result.data?.isPrepared == true) {
+//                        withContext(Dispatchers.Main) {
+//                            _isPrepared.postValue(true)
+//                            Log.i("isPrepared:", (result.data?.isPrepared ?: true).toString())
+//                        }
+//                    }
+//                    else{
+//                        _isPrepared.postValue(false)
+//                    }
                 }
                 is Result.Error -> {
                     Log.e("isDailyPrepared:", "${result.exception.message}")

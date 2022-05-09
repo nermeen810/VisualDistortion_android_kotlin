@@ -53,7 +53,7 @@ class HistoryByServiceAdapter (private var historyList: ArrayList<ServiceData>,
     fun showDialog(address: String?) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle(R.string.app_name)
-        builder.setMessage("${R.string.full_address} \n ${address}")
+        builder.setMessage("${context.getString(R.string.full_address)} \n ${address}")
         builder.setIcon(R.drawable.ic_baseline_location_on_24)
         builder.setNeutralButton(R.string.cancel) { dialogInterface, which ->
 

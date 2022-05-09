@@ -39,7 +39,7 @@ class FilteredHistoryAdapter (private var filteredHistoryList: ArrayList<Data>,
 
     override fun onBindViewHolder(holder: FilteredHistoryViewHolder, position: Int) {
         val temp = filteredHistoryList[position]
-        holder.binding.periodTxt.text = temp.title
+        holder.binding.periodTxt.text = Constants.convertNumsToArabic(temp.title?:"")
         holder.binding.periodValue.text = Constants.convertNumsToArabic(temp.period)
         holder.binding.taskNumTxt.text = Constants.convertNumsToArabic(temp.count.toString())+" "+context.getString(
             R.string.task)

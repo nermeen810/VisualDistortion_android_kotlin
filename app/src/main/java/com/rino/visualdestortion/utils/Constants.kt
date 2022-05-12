@@ -1,6 +1,11 @@
 package com.rino.visualdestortion.utils
 object Constants {
-    const val BASE_URL = "https://amanat-jeddah-staging.azurewebsites.net/"
+
+    // staging URL
+    const val BASE_URL = "https://rino-ops-staging.azurewebsites.net/"
+
+    // production URL
+    // const val BASE_URL = "https://rino-ops.azurewebsites.net/"
 
     fun convertNumsToArabic(value: String): String {
         return (value.replace("1", "١").replace("2", "٢")

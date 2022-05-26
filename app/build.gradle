@@ -5,7 +5,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'  }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     buildFeatures {
@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId "com.rino.visualdestortion"
         minSdkVersion 26
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 

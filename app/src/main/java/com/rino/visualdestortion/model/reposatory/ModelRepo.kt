@@ -705,8 +705,9 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                 Log.i("ModelRepository", "Error${response.errorBody()?.string()}")
                 when (response.code()) {
                     400 -> {
-                        Log.e("Error 400", "Bad Request")
-                        result = Result.Error(Exception("Bad Request isDailyPrepared"))
+                            Log.e("Error 400", "Bad Request")
+                            result = Result.Error(Exception("Bad Request isDailyPrepared"))
+
                     }
                     404 -> {
                         Log.e("Error 404", "Not Found")

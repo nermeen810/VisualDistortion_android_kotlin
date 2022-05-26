@@ -24,9 +24,10 @@
     <string name="select">اختر</string>
     <string name="workersType">الأفراد المشاركين</string>
     <string name="spicialItems">بيانات خاصة</string>
-    <string name="mSquare">متر مربع ( م2 )</string>
-    <string name="mCube">متر مكعب ( م3 )</string>
-    <string name="numberR">عدد الردوم </string>
+    <string name="mSquare">عدد المواقع</string>
+<!--    متر مربع ( م2 )-->
+    <string name="mCube">عدد المواقع</string>
+    <string name="numberR">عدد الردود </string>
     <string name="notes">الملاحظات</string>
     <string name="submit">تسجيل</string>
     <string name="QRCode">الرمز التكويدى</string>

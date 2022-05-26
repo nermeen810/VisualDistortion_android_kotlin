@@ -70,7 +70,7 @@ class SplashFragment : Fragment() {
     private fun observeShowError() {
         viewModel.setError.observe(viewLifecycleOwner) {
             it?.let {
-                if(it=="login required, logout and login again")
+                if(it=="login required, logout and login again"||it =="Bad Request isDailyPrepared")
                     navToWelcome()
                 else {
                     navToError()

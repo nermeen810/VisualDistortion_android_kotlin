@@ -147,7 +147,8 @@
                     android:clickable="true"
                     android:text="@string/forgot_password"
                     android:textColor="@color/dark_gray"
-                    android:textSize="@dimen/newsMoreTextSize" />
+                    android:textSize="@dimen/newsMoreTextSize"
+                    tools:ignore="TouchTargetSizeCheck" />
 
                 <TextView
                     android:id="@+id/privacyPolicy_txt"
@@ -158,7 +159,8 @@
                     android:clickable="true"
                     android:text="@string/privacy_policy"
                     android:textColor="@color/dark_gray"
-                    android:textSize="@dimen/newsMoreTextSize" />
+                    android:textSize="@dimen/newsMoreTextSize"
+                    tools:ignore="TouchTargetSizeCheck" />
                 <ProgressBar
                     android:id="@+id/progress"
                     android:layout_width="wrap_content"

@@ -60,7 +60,12 @@ class AddServiceViewModel(application: Application) : AndroidViewModel(applicati
 
     val getDailyPreparation: LiveData<DailyPreparation?>
         get() = _getDailyPreparation
-
+    var before = false
+    var during = false
+    var after = false
+    fun viewLoading(viewStatus :Int){
+        _loading.value = viewStatus
+    }
 
     fun getServicesData() {
         _loading.postValue(View.VISIBLE)

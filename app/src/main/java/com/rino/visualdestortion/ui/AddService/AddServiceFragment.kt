@@ -3,6 +3,7 @@ package com.rino.visualdestortion.ui.AddService
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,6 +11,7 @@ import android.database.Cursor
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.location.LocationManager
+import android.media.MediaScannerConnection
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
@@ -17,8 +19,10 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Environment.*
 import android.os.Looper
 import android.provider.MediaStore
+import android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
@@ -49,17 +53,12 @@ import com.rino.visualdestortion.model.pojo.addService.Streets
 import com.rino.visualdestortion.ui.home.MainActivity
 import com.rino.visualdestortion.utils.Constants
 import com.rino.visualdestortion.utils.NetworkConnection
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.IOException
+import java.io.*
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -77,7 +76,7 @@ class AddServiceFragment : Fragment() {
     private  var beforeImgBody: MultipartBody.Part? = null
     private  var duringImgBody: MultipartBody.Part? = null
     private  var afterImgBody: MultipartBody.Part? = null
-    private lateinit  var formData: FormData
+    private  var formData = FormData()
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val BEFORE_CAMERA_REQUEST_CODE = 100
     private val BEFORE_GALLERY_REQUEST_CODE = 200
@@ -128,6 +127,7 @@ class AddServiceFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ),
             REQUEST_CODE
@@ -223,11 +223,18 @@ class AddServiceFragment : Fragment() {
     }
     private fun enableCamera(CAMERA_REQUEST_CODE:Int) {
 
-        val storageDirectory: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDirectory: File? = requireContext().getExternalFilesDir(DIRECTORY_PICTURES)
         try {
-            imageFile = File.createTempFile(fileName,".jpg",storageDirectory)
-            currentPhotoPath = imageFile.absolutePath
-            val uri: Uri? = context?.let { it1 -> FileProvider.getUriForFile(it1,"com.rino.visualdestortion.fileprovider",imageFile) }
+//            imageFile = File.createTempFile(fileName,".jpg",storageDirectory)
+ //          currentPhotoPath = imageFile.absolutePath
+            var filename = "${fileName}_${System.currentTimeMillis()}.jpg"
+            //    filename ="photo.jpg"
+            val directory = getExternalStoragePublicDirectory(DIRECTORY_PICTURES)
+            val file = File(directory,filename)
+            file.createNewFile()
+            currentPhotoPath = file.absolutePath
+
+            val uri: Uri? = context?.let { it1 -> FileProvider.getUriForFile(it1,"com.rino.visualdestortion.provider",file) }
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,uri)
             startActivityForResult(cameraIntent,CAMERA_REQUEST_CODE)
@@ -238,7 +245,7 @@ class AddServiceFragment : Fragment() {
     }
 
     private fun submit() {
-        formData = getFormDataFromUi(serviceName)
+        getFormDataFromUi(serviceName)
            if (validateData(formData) && lat != "" && lng != "") {
                if(NetworkConnection.checkInternetConnection(requireContext())){
                     viewModel.setFormData(formData)
@@ -250,10 +257,11 @@ class AddServiceFragment : Fragment() {
     }
 
 
-    private fun getFormDataFromUi(serviceName: String): FormData {
-        Log.e("Images","Before : ${beforeImgBody.toString()} ,During : ${duringImgBody.toString()} ,Aftar : ${afterImgBody.toString()}")
-    //    Toast.makeText(requireContext(),"Before : ${beforeImgBody.toString()} ,During : ${duringImgBody.toString()} ,Aftar : ${afterImgBody.toString()}",Toast.LENGTH_SHORT).show()
-        val formData = FormData()
+    private fun getFormDataFromUi(serviceName: String) {
+   //     Log.e("Images","Before : ${beforeImgBody.toString()} ,During : ${duringImgBody.toString()} ,Aftar : ${afterImgBody.toString()}")
+     //   Toast.makeText(requireContext(),"Before : ${beforeImgBody.toString()} ,During : ${duringImgBody.toString()} ,Aftar : ${afterImgBody.toString()}",Toast.LENGTH_SHORT).show()
+    //    Log.e("Images","Before : ${formData.beforeImg.toString()} ,During : ${formData.duringImg.toString()} ,Aftar : ${formData.afterImg.toString()}")
+
         if (serviceName == "مخلفات الهدم") {
             if(binding.editTextMCube.text.toString()!="")
             formData.mCube = binding.editTextMCube.text.toString().toFloat()
@@ -271,20 +279,19 @@ class AddServiceFragment : Fragment() {
         formData.lat = lat
         formData.lng = lng
         formData.notes = binding.notesEditTxt.text.toString()
-        if(beforeImgBody != null) {
 
-            formData.beforeImg = beforeImgBody as MultipartBody.Part
 
-        }
-        Log.e("Image","Before : ${beforeImgBody.toString()}  ,Aftar : ${afterImgBody.toString()}")
-        if(afterImgBody != null) {
-            formData.afterImg = afterImgBody as MultipartBody.Part
-        }
-        if(duringImgBody != null) {
-            formData.duringImg = duringImgBody as MultipartBody.Part
-        }
+//            formData.beforeImg = beforeImgBody as MultipartBody.Part
 
-        return formData
+
+//        Log.e("Image","Before : ${beforeImgBody.toString()}  ,Aftar : ${afterImgBody.toString()}")
+//        if(afterImgBody != null) {
+//            formData.afterImg = afterImgBody as MultipartBody.Part
+//        }
+//        if(duringImgBody != null) {
+//            formData.duringImg = duringImgBody as MultipartBody.Part
+//        }
+
     }
 
     private fun afterPicOnClick() {
@@ -623,6 +630,7 @@ class AddServiceFragment : Fragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun validateData(formData: FormData): Boolean {
+    //    Log.e("Images","Before : ${formData.beforeImg.toString()} ,During : ${formData.duringImg.toString()} ,Aftar : ${formData.afterImg.toString()}")
         var flagSector = true
         var flagDistrict = true
         var flagMunicipality = true
@@ -668,7 +676,7 @@ class AddServiceFragment : Fragment() {
             binding.streetTextInputLayout.isErrorEnabled = false
             flagStreet = true
         }
-        if (beforeImgBody == null) {
+        if (!viewModel.before) {
             binding.textInputbeforeImg.error = getString(R.string.required)
             flagBeforeImg = false
         } else {
@@ -676,7 +684,7 @@ class AddServiceFragment : Fragment() {
             binding.textInputbeforeImg.isErrorEnabled = false
             flagBeforeImg = true
         }
-        if (afterImgBody == null) {
+        if (!viewModel.after) {
             binding.textInputAfterImg.error = getString(R.string.required)
             flagAfterImg = false
         } else {
@@ -712,7 +720,7 @@ class AddServiceFragment : Fragment() {
                 binding.textInputNumberR.isErrorEnabled = false
                 flagNumberR = true
             }
-            if (duringImgBody == null) {
+            if (!viewModel.during) {
                 binding.textInputDuringImg.error = getString(R.string.required)
                 flagDuringImg = false
             } else {
@@ -729,7 +737,7 @@ class AddServiceFragment : Fragment() {
                 binding.textInputMSquare.isErrorEnabled = false
                 flagMSquare = true
             }
-            if (duringImgBody == null) {
+            if (!viewModel.during) {
                 binding.textInputDuringImg.error = getString(R.string.required)
                 flagDuringImg = false
             } else {
@@ -738,7 +746,7 @@ class AddServiceFragment : Fragment() {
                 flagDuringImg = true
             }
         } else if (serviceTypeId == 3) {
-            if (duringImgBody == null) {
+            if (!viewModel.during) {
                 binding.textInputDuringImg.error = getString(R.string.required)
                 flagDuringImg = false
             } else {
@@ -776,13 +784,13 @@ class AddServiceFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK && requestCode == AFTER_CAMERA_REQUEST_CODE) {
           //  val bitmap = data.extras?.get("data") as Bitmap
               bitmap = BitmapFactory.decodeFile(currentPhotoPath)
-              binding.afterPic.setImageBitmap(bitmap)
+          //    binding.afterPic.setImageBitmap(bitmap)
               setAfterImage(bitmap)
 
 
         }
         if (resultCode == Activity.RESULT_OK && requestCode == AFTER_GALLERY_REQUEST_CODE) {
-            binding.afterPic.setImageURI(data?.data) // handle chosen image
+          //  binding.afterPic.setImageURI(data?.data) // handle chosen image
             val bitmap = MediaStore.Images.Media.getBitmap(
                 requireContext().getContentResolver(),
                 data?.data
@@ -791,7 +799,7 @@ class AddServiceFragment : Fragment() {
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == BEFORE_GALLERY_REQUEST_CODE) {
-            binding.beforPic.setImageURI(data?.data) // handle chosen image
+         //   binding.beforPic.setImageURI(data?.data) // handle chosen image
             //    var bitmap = data?.data as Bitmap
             val bitmap = MediaStore.Images.Media.getBitmap(
                 requireContext().getContentResolver(),
@@ -803,13 +811,13 @@ class AddServiceFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK && requestCode == BEFORE_CAMERA_REQUEST_CODE) {
         //    val bitmap = data.extras?.get("data") as Bitmap
             bitmap = BitmapFactory.decodeFile(currentPhotoPath)
-            binding.beforPic.setImageBitmap(bitmap)
+      //      binding.beforPic.setImageBitmap(bitmap)
             setBeforeImage(bitmap)
 
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == DURING_GALLERY_REQUEST_CODE) {
-            binding.duringPic.setImageURI(data?.data) // handle chosen image
+         //   binding.duringPic.setImageURI(data?.data) // handle chosen image
             //    var bitmap = data?.data as Bitmap
             val bitmap = MediaStore.Images.Media.getBitmap(
                 requireContext().getContentResolver(),
@@ -820,100 +828,149 @@ class AddServiceFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK && requestCode == DURING_CAMERA_REQUEST_CODE ) {
 //            val bitmap = data.extras?.get("data") as Bitmap
             bitmap = BitmapFactory.decodeFile(currentPhotoPath)
-            binding.duringPic.setImageBitmap(bitmap)
+        //    binding.duringPic.setImageBitmap(bitmap)
             setDuringImage(bitmap)
 
         }
         }
 
     private fun setDuringImage(bitmap: Bitmap) {
+        viewModel.viewLoading(View.VISIBLE)
         var duringBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
         CoroutineScope(Dispatchers.Default).launch {
-            val current = LocalDateTime.now()
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-            val formatted = current.format(formatter)
-            duringBitmap =
-                drawTextToBitmap(
-                    duringBitmap,
-                    formatted.toString()
-                )
-            duringBitmap = compressBitmap(duringBitmap,30)
-            try {
-                val file =
-                    File(getRealPathFromURI(getImageUri(requireContext(), duringBitmap,"DURING_IMG_")))
-                println("duringFilePath" + file.path)
-                val requestFile: RequestBody =
-                    file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                duringImgBody = MultipartBody.Part.createFormData(
-                    "duringImg",
-                    file.name.trim(),
-                    requestFile
-                )
+            val during = async {
+                val current = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+                val formatted = current.format(formatter)
+                duringBitmap =
+                    drawTextToBitmap(
+                        duringBitmap,
+                        formatted.toString()
+                    )
+                duringBitmap = compressBitmap(duringBitmap, 30)
+                try {
+                    val file = getImageUri(
+                                    requireContext(),
+                                    duringBitmap,
+                                    "DURING_IMG_"
+                                )
+
+
+                    println("duringFilePath" + file.path)
+                    val requestFile: RequestBody =
+                        file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                   runBlocking {
+                        formData.duringImg = MultipartBody.Part.createFormData(
+                            "duringImg",
+                            file.name.trim(),
+                            requestFile
+                        )
+                    }
+
             } catch (e: IOException) {
-                e.printStackTrace()
-            }
+            e.printStackTrace()
         }
-        binding.duringPic.setImageBitmap(duringBitmap)
+                true
+        }
+            if(during.await()) {
+                withContext(Dispatchers.Main){ viewModel.viewLoading(View.GONE)
+                    binding.duringPic.setImageBitmap(duringBitmap)
+                    viewModel.during = true}
+
+            }
+
+        }
     }
 
     private fun setBeforeImage(bitmap: Bitmap) {
+        viewModel.viewLoading(View.VISIBLE)
         var beforeBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-        CoroutineScope(Dispatchers.Default).launch {
-            val current = LocalDateTime.now()
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-            val formatted = current.format(formatter)
-            beforeBitmap =
-                drawTextToBitmap(
-                    beforeBitmap,
-                    formatted.toString()
-                )
-            beforeBitmap = compressBitmap(beforeBitmap,30)
+        CoroutineScope(Dispatchers.IO).launch {
+            val before = async {
+                val current = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+                val formatted = current.format(formatter)
+                beforeBitmap =
+                    drawTextToBitmap(
+                        beforeBitmap,
+                        formatted.toString()
+                    )
+                beforeBitmap = compressBitmap(beforeBitmap, 30)
 
-            try {
-                val file =
-                    File(getRealPathFromURI(getImageUri(requireContext(), beforeBitmap,"bEFORE_IMG")))
-                val requestFile: RequestBody =
-                    file
-                        .asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                beforeImgBody = MultipartBody.Part.createFormData(
-                    "beforeImg",
-                    file.name.trim(),
-                    requestFile
-                )
-            } catch (e: IOException) {
-                e.printStackTrace()
+                try {
+                    val file = getImageUri(
+                                    requireContext(),
+                                    beforeBitmap,
+                                    "BEFORE_IMG"
+                                )
+
+                    val requestFile: RequestBody =
+                        file
+                            .asRequestBody("multipart/form-data".toMediaTypeOrNull())
+
+                    runBlocking {
+                        formData.beforeImg = MultipartBody.Part.createFormData(
+                            "beforeImg",
+                            file.name.trim(),
+                            requestFile
+                        )
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                true
+            }
+            if(before.await()) {
+                withContext(Dispatchers.Main){ viewModel.viewLoading(View.GONE)
+                binding.beforPic.setImageBitmap(beforeBitmap)
+                viewModel.before = true}
             }
         }
-        binding.beforPic.setImageBitmap(beforeBitmap)
     }
 
     private fun setAfterImage(bitmap: Bitmap) {
+        viewModel.viewLoading(View.VISIBLE)
         var afterBitmap =bitmap.copy(Bitmap. Config.ARGB_8888,true)
         CoroutineScope(Dispatchers.Default).launch {
-            val current = LocalDateTime.now()
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-            val formatted = current.format(formatter)
-            afterBitmap =
-                drawTextToBitmap(
-                    afterBitmap,
-                    formatted.toString()
-                )
-            afterBitmap = compressBitmap(afterBitmap,30)
-            try {
-                val file = File(getRealPathFromURI(getImageUri(requireContext(), afterBitmap,"AFTER_IMG")))
-                println("afterfilePath" + file.path)
-                val requestFile: RequestBody =
-                    file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                afterImgBody = MultipartBody.Part.createFormData(
-                    "afterImg",
-                    file.name.trim(),
-                    requestFile
-                )
-            } catch (e: IOException) {
-                e.printStackTrace()
+            val after = async {
+                val current = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+                val formatted = current.format(formatter)
+                afterBitmap =
+                    drawTextToBitmap(
+                        afterBitmap,
+                        formatted.toString()
+                    )
+                afterBitmap = compressBitmap(afterBitmap, 30)
+                try {
+                    val file =
+                            getImageUri(
+                                requireContext(),
+                                afterBitmap,
+                                "AFTER_IMG")
+                    println("afterfilePath" + file.path)
+                    val requestFile: RequestBody =
+                        file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                    runBlocking {
+                        formData.afterImg = MultipartBody.Part.createFormData(
+                            "afterImg",
+                            file.name.trim(),
+                            requestFile
+                        )
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                true
+            }
+            if(after.await()) {
+                withContext(Dispatchers.Main){ viewModel.viewLoading(View.GONE)
+                binding.afterPic.setImageBitmap(afterBitmap)
+                viewModel.after = true}
+
             }
         }
-        binding.afterPic.setImageBitmap(afterBitmap)
     }
 private  fun  resizeBitmap(imagePath:String?):Bitmap{
     val targetW = 800
@@ -968,36 +1025,145 @@ private  fun  resizeBitmap(imagePath:String?):Bitmap{
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap,title:String): Uri? {
-        val bytes = ByteArrayOutputStream()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            inImage.compress(Bitmap.CompressFormat.WEBP_LOSSLESS, 20, bytes)
-        }
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-        val currentDate = sdf.format(Date())
-        val path = MediaStore.Images.Media.insertImage(
-            inContext.contentResolver,
-            inImage,
-            title+ currentDate.toString().replace(" ",""),
-            null
-        )
+    fun getImageUri(inContext: Context, inImage: Bitmap,title:String): File {
+//        val bytes = ByteArrayOutputStream()
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//            inImage.compress(Bitmap.CompressFormat.WEBP_LOSSLESS, 20, bytes)
+//        }
+//        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+//        val currentDate = sdf.format(Date())
 //        val path = MediaStore.Images.Media.insertImage(
 //            inContext.contentResolver,
 //            inImage,
-//            "After_IMG_",
+//            title+ currentDate.toString().replace(" ",""),
 //            null
 //        )
-        return Uri.parse(path)
+//        return Uri.parse(path)
+
+
+//        return  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//              saveImageInQ(inImage, title)
+//          }
+//          else{
+//              legacySave(inImage,title)
+//          }
+                    return    legacySave(inImage,title)
+
+        }
+
+    private fun saveImageInQ(bitmap: Bitmap, title: String): Uri? {
+        val filename = "${title}_${System.currentTimeMillis()}.jpg"
+        val fos: OutputStream?
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, DIRECTORY_PICTURES)
+            put(MediaStore.Video.Media.IS_PENDING, 1)
+        }
+
+
+        //use application context to get contentResolver
+        val contentResolver = requireActivity().applicationContext.contentResolver
+        val uri = contentResolver.insert(EXTERNAL_CONTENT_URI, contentValues)
+        uri?.let { contentResolver.openOutputStream(it) }.also { fos = it }
+        fos?.use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        fos?.flush()
+        fos?.close()
+
+        uri?.let {
+            contentResolver.update(it, contentValues, null, null)
+        }
+        contentValues.clear()
+        contentValues.put(MediaStore.Video.Media.IS_PENDING, 0)
+        Log.e("NermeenUri",uri.toString())
+        return uri
+    }
+
+    private fun legacySave(bitmap: Bitmap, title: String): File {
+        Log.e("Nermeenbitmap",bitmap.toString()+"title :"+title)
+
+        val appContext = requireContext().applicationContext
+        var filename = "${title}_${System.currentTimeMillis()}.jpg"
+    //    filename ="photo.jpg"
+        val directory = getExternalStoragePublicDirectory(DIRECTORY_PICTURES)
+        val file = File(directory,filename)
+        file.createNewFile()
+        val outStream = FileOutputStream(file)
+         bitmap.compress(Bitmap.CompressFormat.WEBP, 30, outStream)
+        outStream.flush()
+        outStream.close()
+        MediaScannerConnection.scanFile(appContext, arrayOf(file.absolutePath),
+            null, null)
+
+        val uri = FileProvider.getUriForFile(appContext, "com.rino.visualdestortion.provider",
+            file)
+
+//        val file = File(filename)
+//        file.createNewFile()
+//        val bos = ByteArrayOutputStream()
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
+//        val bitmapdata = bos.toByteArray()
+//
+//        val fos = FileOutputStream(file)
+//        fos.write(bitmapdata)
+//        fos.flush()
+//        fos.close()
+//        val uri = FileProvider.getUriForFile(appContext, "${appContext.packageName}.fileprovider",
+//            file)
+//        Log.e("NermeenUri",uri.toString()+"authority :"+"${appContext.packageName}.fileprovider")
+
+        return file
     }
 
     fun getRealPathFromURI(uri: Uri?): String? {
+        Log.e("uriiiiiiiii",uri.toString())
         val cursor: Cursor? =
             uri?.let { requireActivity().getContentResolver().query(it, null, null, null, null) }
         cursor?.moveToFirst()
         val idx: Int? = cursor?.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-        return idx?.let { cursor.getString(it) }
-    }
+        Log.e("cursorrrrr",cursor.toString())
 
+//        return idx?.let { cursor.getString(it)
+        return cursor?.getString(0)
+
+    }
+//    fun saveImageInQ(bitmap: Bitmap):Uri?
+//    {
+//        val filename = "IMG_${System.currentTimeMillis()}.jpg"
+//        var fos: OutputStream? = null
+//        var imageUri: Uri? = null
+//        val contentValues = ContentValues().apply {
+//            put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+//            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+//            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+//            put(MediaStore.Video.Media.IS_PENDING, 1)
+//        }
+//
+//        //use application context to get contentResolver
+//        val contentResolver = requireActivity().application.contentResolver
+//
+//        contentResolver.also { resolver ->
+//            imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+//            fos = imageUri?.let { resolver.openOutputStream(it) }
+//        }
+//
+//        fos?.use { bitmap.compress(Bitmap.CompressFormat.JPEG, 70, it) }
+//
+////        contentValues.clear()
+////        contentValues.put(MediaStore.Video.Media.IS_PENDING, 0)
+////        resolver.update(imageUri, contentValues, null, null)
+//
+//        return imageUri
+//    }
+
+//    fun saveTheImageLegacyStyle(bitmap:Bitmap){
+//        val filename = "IMG_${System.currentTimeMillis()}.jpg"
+//        var fos: OutputStream? = null
+//        val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+//        val image = File(imagesDir, filename)
+//        fos = FileOutputStream(image)
+//        fos?.use {bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)}
+//    }
     @SuppressLint("MissingPermission")
     fun getLatestLocation() {
         if (isPermissionGranted()) {

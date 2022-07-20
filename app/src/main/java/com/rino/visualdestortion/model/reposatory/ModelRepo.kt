@@ -71,7 +71,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء فحص الشبكة"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -119,7 +119,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء فحص الشبكة"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -226,7 +226,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
         } catch (e: IOException) {
             val message: String
             if (e is SocketTimeoutException) {
-                message = "حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى."
+                message = "حدث خطأ أثناء الاتصال  برجاء المحاولة مرة أخرى."
                 result = Result.Error(java.lang.Exception(message))
             } else {
                 result = Result.Error(e)
@@ -288,7 +288,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error ${response?.code()}")
@@ -361,7 +361,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -435,7 +435,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -508,7 +508,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -597,7 +597,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -680,7 +680,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -752,7 +752,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
 
@@ -827,7 +827,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -906,7 +906,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -980,7 +980,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -1053,7 +1053,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")
@@ -1135,7 +1135,7 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                     502 -> {
                         Log.e("Error 502", "Time out")
                         result =
-                            Result.Error(Exception("حدث خطأ أثناء الاتصال بالانترنت برجاء المحاولة مرة أخرى"))
+                            Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                     }
                     else -> {
                         Log.e("Error", "Generic Error")

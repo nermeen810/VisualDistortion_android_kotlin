@@ -154,8 +154,7 @@
                             android:textSize="@dimen/newsMoreTextSize"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/addressTxt"
-                            app:layout_constraintRight_toLeftOf="@id/addressTxt"
+                            app:layout_constraintRight_toRightOf="@+id/addressTxt"
                             app:layout_constraintTop_toBottomOf="@+id/addressTxt" />
 
                         <TextView
@@ -184,8 +183,7 @@
                             android:textDirection="rtl"
                             android:textSize="@dimen/newsMoreTextSize"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="@+id/menetorNameTxt"
-                            app:layout_constraintRight_toLeftOf="@+id/menetorNameTxt"
+                            app:layout_constraintRight_toRightOf="@+id/menetorNameTxt"
                             app:layout_constraintTop_toBottomOf="@+id/menetorNameTxt" />
 
 

@@ -99,7 +99,7 @@
 
                         <TextView
                             android:id="@+id/serviceNumTxt"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/paddingLayout"
                             android:layout_marginRight="@dimen/marginTextField"
@@ -128,7 +128,7 @@
 
                         <TextView
                             android:id="@+id/addressTxt"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/paddingLayout"
                             android:layout_marginRight="@dimen/marginTextField"
@@ -154,13 +154,12 @@
                             android:textSize="@dimen/newsMoreTextSize"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/addressTxt"
-                            app:layout_constraintRight_toLeftOf="@id/addressTxt"
+                            app:layout_constraintRight_toRightOf="@+id/addressTxt"
                             app:layout_constraintTop_toBottomOf="@+id/addressTxt" />
 
                         <TextView
                             android:id="@+id/menetorNameTxt"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/paddingLayout"
                             android:layout_marginRight="@dimen/marginTextField"
@@ -184,8 +183,7 @@
                             android:textDirection="rtl"
                             android:textSize="@dimen/newsMoreTextSize"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="@+id/menetorNameTxt"
-                            app:layout_constraintRight_toLeftOf="@+id/menetorNameTxt"
+                            app:layout_constraintRight_toRightOf="@+id/menetorNameTxt"
                             app:layout_constraintTop_toBottomOf="@+id/menetorNameTxt" />
 
 

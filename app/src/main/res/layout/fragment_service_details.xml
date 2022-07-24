@@ -27,8 +27,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card"
-                android:layout_width="270dp"
-                android:layout_height="190dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
                 android:layout_margin="16dp"
                 app:cardCornerRadius="6dp"
                 app:cardElevation="8dp"
@@ -72,7 +72,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_holder"
                 android:layout_width="0dp"
-                android:layout_height="110dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_marginTop="@dimen/paddingLayout"
                 app:cardCornerRadius="20dp"
@@ -118,19 +118,20 @@
                             android:textColor="@color/dark_gray"
                             android:textSize="@dimen/normalTextSize"
                             android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@+id/serviceNumTxt"
                             app:layout_constraintRight_toLeftOf="@+id/serviceNumTxt"
-                            app:layout_constraintTop_toBottomOf="@+id/date_from_txt" />
+                            app:layout_constraintTop_toTopOf="@+id/serviceNumTxt" />
 
                         <TextView
                             android:id="@+id/addressTxt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/paddingText"
-                            android:layout_marginBottom="@dimen/paddingLayout"
+                            android:layout_margin="@dimen/paddingText"
                             android:padding="4dp"
                             android:text="@string/address_txt"
                             android:textColor="@color/black"
                             android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/serviceNumTxt" />
 
@@ -138,17 +139,16 @@
                             android:id="@+id/addressValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/paddingText"
-                            android:layout_marginRight="6dp"
-                            android:maxWidth="250dp"
+                            android:maxWidth="200dp"
                             android:maxLines="2"
                             android:padding="4dp"
                             android:textColor="@color/dark_gray"
                             android:textDirection="rtl"
                             android:textSize="@dimen/normalTextSize"
                             android:textStyle="bold"
-                            app:layout_constraintRight_toLeftOf="@+id/addressTxt"
-                            app:layout_constraintTop_toBottomOf="@+id/serviceNumValue" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toRightOf="@+id/serviceNumValue"
+                            app:layout_constraintTop_toBottomOf="@+id/serviceNumTxt" />
 
                         <TextView
                             android:id="@+id/date_from_txt"
@@ -248,8 +248,7 @@
                 android:layout_marginTop="@dimen/paddingLayout"
                 android:maxWidth="400dp"
                 android:textDirection="rtl"
-                android:padding="@dimen/paddingLayout"
-                android:text=""
+                android:padding="@dimen/paddingText"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/normalTextSize"
                 android:textStyle="bold"

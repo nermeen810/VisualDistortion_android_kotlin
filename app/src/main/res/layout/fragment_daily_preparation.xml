@@ -91,7 +91,7 @@
                     android:layout_margin="8dp"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/equipments_item" />
+                    tools:listitem="@layout/equipment_item" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

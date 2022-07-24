@@ -27,10 +27,26 @@
         <entry key="..\:/ARG project/VisualDistortion/app/src/main/res/layout/shimmer_item.xml" value="0.36666666666666664" />
         <entry key="..\:/ARG project/VisualDistortion/app/src/main/res/layout/shimmer_sevice_item.xml" value="0.358695652173913" />
         <entry key="..\:/ARG project/VisualDistortion/app/src/main/res/xml/provider_paths.xml" value="0.18958333333333333" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/drawable/rectangle.xml" value="0.2325" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/drawable/rectangle_button.xml" value="0.2325" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/equipment_item.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/equipments_item.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/filtered_item.xml" value="0.3625" />
         <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/fragment_add_service.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/fragment_daily_preparation.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/fragment_edit_daily_preparation.xml" value="0.3625" />
         <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/fragment_login.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/fragment_qr_code_result.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/fragment_service_details.xml" value="0.35080645161290325" />
         <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/fragment_services.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/item_details.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/period_item.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/select_gallery_or_camera_view.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/service_history_item.xml" value="0.3625" />
         <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/service_item.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/layout/sub_filtered_history_item.xml" value="0.3625" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2325" />
+        <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2325" />
         <entry key="..\:/VisualDistortion_android_kotlin/app/src/main/res/xml/path.xml" value="0.215625" />
         <entry key="..\:/android projects/amanet_jada/app/src/main/res/drawable/card.xml" value="0.196" />
         <entry key="..\:/android projects/amanet_jada/app/src/main/res/layout/card_details.xml" value="0.35280797101449274" />

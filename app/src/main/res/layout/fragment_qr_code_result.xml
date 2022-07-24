@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -19,35 +20,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
                 android:background="@color/teal"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card"
-                android:layout_width="270dp"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="16dp"
                 app:cardCornerRadius="6dp"
                 app:cardElevation="8dp"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/title_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:layout_margin="@dimen/paddingText"
                         android:padding="@dimen/paddingText"
                         android:text="الصوره قبل المهمة"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/newsMoreTextSize"
-                        android:layout_gravity="center_horizontal"
-                        />
+                        android:textSize="@dimen/newsMoreTextSize" />
+
                     <com.smarteist.autoimageslider.SliderView
                         android:id="@+id/imageSlider"
                         android:layout_width="match_parent"
@@ -74,8 +77,8 @@
                 android:layout_marginTop="50dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/img_header"
                 app:layout_constraintWidth_percent="0.9">
 
@@ -92,96 +95,98 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="10">
-<!--                        android:padding="@dimen/paddingText">-->
+                        <!--                        android:padding="@dimen/paddingText">-->
 
                         <TextView
                             android:id="@+id/serviceNumTxt"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/paddingText"
                             android:layout_marginTop="@dimen/paddingLayout"
+                            android:layout_marginRight="@dimen/marginTextField"
                             android:padding="4dp"
                             android:text="@string/service_Type"
                             android:textColor="@color/black"
-                            android:textStyle="bold"
                             android:textSize="@dimen/newsMoreTextSize"
+                            android:textStyle="bold"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/menetorNameTxt" />
+                            app:layout_constraintTop_toBottomOf="@+id/menetorNameValue" />
 
                         <TextView
                             android:id="@+id/serviceNumValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/paddingLayout"
                             android:maxWidth="250dp"
                             android:maxLines="2"
                             android:padding="4dp"
+                            android:text="ddffffffffggghhggh"
                             android:textColor="@color/dark_gray"
                             android:textDirection="rtl"
                             android:textSize="@dimen/newsMoreTextSize"
                             android:textStyle="bold"
-                            app:layout_constraintRight_toLeftOf="@+id/serviceNumTxt"
-                            app:layout_constraintTop_toBottomOf="@+id/menetorNameTxt" />
+                            app:layout_constraintRight_toRightOf="@+id/serviceNumTxt"
+                            app:layout_constraintTop_toBottomOf="@+id/serviceNumTxt" />
 
                         <TextView
                             android:id="@+id/addressTxt"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/paddingLayout"
-                          android:layout_marginBottom="@dimen/paddingLayout"
-                            android:layout_marginRight="@dimen/paddingText"
+                            android:layout_marginRight="@dimen/marginTextField"
+                            android:layout_marginBottom="@dimen/paddingLayout"
                             android:padding="4dp"
                             android:text="@string/created_date"
                             android:textColor="@color/black"
                             android:textSize="@dimen/newsMoreTextSize"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/serviceNumTxt" />
+                            app:layout_constraintTop_toBottomOf="@+id/serviceNumValue" />
 
                         <TextView
                             android:id="@+id/addressValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/paddingLayout"
-                            android:layout_marginTop="@dimen/paddingLayout"
                             android:maxWidth="250dp"
                             android:padding="4dp"
+                            android:text="fsdgghnhnjhnjnjhnhgbv"
                             android:textColor="@color/dark_gray"
                             android:textDirection="rtl"
                             android:textSize="@dimen/newsMoreTextSize"
                             android:textStyle="bold"
-                            app:layout_constraintRight_toLeftOf="@id/addressTxt"
                             app:layout_constraintBottom_toBottomOf="parent"
-                           />
+                            app:layout_constraintEnd_toEndOf="@+id/addressTxt"
+                            app:layout_constraintRight_toLeftOf="@id/addressTxt"
+                            app:layout_constraintTop_toBottomOf="@+id/addressTxt" />
+
                         <TextView
                             android:id="@+id/menetorNameTxt"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/paddingText"
-                           android:layout_marginTop="@dimen/paddingLayout"
+                            android:layout_marginTop="@dimen/paddingLayout"
+                            android:layout_marginRight="@dimen/marginTextField"
                             android:layout_marginBottom="@dimen/paddingLayout"
                             android:padding="4dp"
                             android:text="@string/menetor_name"
-                            android:textSize="@dimen/newsMoreTextSize"
                             android:textColor="@color/black"
+                            android:textSize="@dimen/newsMoreTextSize"
                             android:textStyle="bold"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
+
                         <TextView
                             android:id="@+id/menetorNameValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/paddingLayout"
                             android:maxWidth="250dp"
                             android:padding="4dp"
+                            android:text="ghjjkkkkkkkkkk"
                             android:textColor="@color/dark_gray"
                             android:textDirection="rtl"
                             android:textSize="@dimen/newsMoreTextSize"
                             android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="@+id/menetorNameTxt"
                             app:layout_constraintRight_toLeftOf="@+id/menetorNameTxt"
-                            app:layout_constraintTop_toTopOf="parent" />
-
+                            app:layout_constraintTop_toBottomOf="@+id/menetorNameTxt" />
 
 
                         <!--                <TextView-->
@@ -199,19 +204,20 @@
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
             <Button
-                android:layout_height="wrap_content"
                 android:id="@+id/viewLocation_btn"
-                android:textColor="@color/white"
-                android:background="@drawable/rectangle_button"
-                android:textStyle="bold"
-                android:layout_marginTop="50dp"
-                android:textSize="@dimen/newsMoreTextSize"
                 android:layout_width="230dp"
-                app:layout_constraintRight_toRightOf="parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rectangle_button"
+                android:text="@string/ViewLocation"
+                android:textColor="@color/white"
+                android:textSize="@dimen/newsMoreTextSize"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_holder"
-                android:text="@string/ViewLocation" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_holder" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -65,7 +65,13 @@ class ServiceDetailsFragment : Fragment() {
         binding.dateFromTxt.text = Constants.convertNumsToArabic(service.createdDate?:"")
         binding.addressValue.text = service.fullLocation
         binding.serviceNumValue.text = Constants.convertNumsToArabic(service.serviceNumber.toString())
-        binding.notesValue.text = service.notes
+        if(service.notes!=null && (service.notes?:"").isEmpty()) {
+            binding.notesValue.text = service.notes
+        }
+        else{
+            binding.notesValue.visibility = View.GONE
+            binding.notesTxt.visibility = View.GONE
+        }
   //      Picasso.with(context).load(service.qrCodeImg).into(binding.qrCodeImg)
         binding.viewQRCodeBtn.setOnClickListener{
             navToQrCode(service.qrCodeImg)

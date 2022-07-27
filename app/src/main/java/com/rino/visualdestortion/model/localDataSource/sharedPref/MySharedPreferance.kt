@@ -9,7 +9,7 @@ import android.content.SharedPreferences
     }
 
     fun getBoolean(key: String,defualtValue: Boolean = false):Boolean{
-        return sharedPreference.getBoolean(key,defualtValue)?:false
+        return sharedPreference.getBoolean(key,defualtValue)?:true
     }
     fun setString (key: String,value: String ){
         sharedPreference.edit().putString(key,value)?.apply()

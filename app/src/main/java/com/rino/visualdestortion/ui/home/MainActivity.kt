@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity() {
         navigationSetup(navController,bottomNavigation)
         handler = Handler()
         runnable = Runnable {
-            Toast.makeText(this, "the session ended please login again", Toast.LENGTH_SHORT).show()
-            navController.popBackStack()
+            Toast.makeText(this, "انتهت الجلسة", Toast.LENGTH_SHORT).show()
+      //      navController.popBackStack()
             navController.navigate(R.id.fingerPrintFragment)
         }
         startHandler()
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         handler.removeCallbacks(runnable)
     }
     private fun startHandler() {
-        handler.postDelayed(runnable, 240000.toLong())
+        handler.postDelayed(runnable, 600000.toLong())
     }
     private fun navigationSetup(navController: NavController, bottomNavigation: MeowBottomNavigation){
         bottomNavigation.add(MeowBottomNavigation.Model(1, R.drawable.ic_baseline_home_24))

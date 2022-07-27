@@ -84,7 +84,7 @@ class AddServiceFragment : Fragment() {
     private val DURING_GALLERY_REQUEST_CODE = 400
     private val AFTER_CAMERA_REQUEST_CODE = 500
     private val AFTER_GALLERY_REQUEST_CODE = 600
-    private val REQUEST_CODE = 100
+    private val REQUEST_CODE = 700
     private var serviceTypeId = 1
     private var serviceName = "الكتابات المشوهة"
     private var lat = ""
@@ -107,8 +107,8 @@ class AddServiceFragment : Fragment() {
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity().application)
         viewModel = AddServiceViewModel(requireActivity().application)
-        if (viewModel.isFirstTimeLaunch()) {
-            viewModel.setFirstTimeLaunch(false)
+        if (!viewModel.isFirstTimeLaunch()) {
+            viewModel.setFirstTimeLaunch(true)
             requestAllPermissions()
         }
         val onBackPressedCallback = object : OnBackPressedCallback(true) {

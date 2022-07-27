@@ -5,7 +5,7 @@ import com.rino.visualdestortion.utils.*
 
   open class PreferenceDataSource(private val sharedPreference: MySharedPreference): Preference {
     override fun getFirstTimeLaunch(): Boolean {
-        return sharedPreference.getBoolean(FIRST_TIME_LAUNCH_KEY,true)
+        return sharedPreference.getBoolean(FIRST_TIME_LAUNCH_KEY,false)
     }
 
     override fun setFirstTimeLaunch(firstTimeLaunch: Boolean) {

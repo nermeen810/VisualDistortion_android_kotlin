@@ -2,15 +2,20 @@ package com.rino.visualdestortion.ui.fingerPrint
 
 import android.Manifest
 import android.app.KeyguardManager
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.hardware.biometrics.BiometricManager
 import android.hardware.biometrics.BiometricPrompt
+import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.os.CancellationSignal
 import android.provider.Settings
+import android.provider.Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,12 +33,12 @@ class FingerPrintFragment : Fragment() {
     private var  cancellationSignal: CancellationSignal? = null
     private val  authenticationCallback: BiometricPrompt.AuthenticationCallback
         get() =
-            @RequiresApi(Build.VERSION_CODES.P)
+            @RequiresApi(P)
             object: BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
                     super.onAuthenticationError(errorCode, errString)
-                    notifyErrorToUser(getString(R.string.FP_error))
-                    enablePermission()
+                    this@FingerPrintFragment.notifyErrorToUser(getString(R.string.FP_error))
+    //                enablePermission()
                     viewModel.logout()
                     navgateToLogin()
                 }
@@ -43,7 +48,8 @@ class FingerPrintFragment : Fragment() {
 //                    if(findNavController().currentDestination?.id == R.id.loginFragment2)
                     if(viewModel.isLogin())
                     {
-                        navgateToHome()
+                        findNavController().popBackStack()
+                    //    navgateToHome()
                     }
                     else {
                         navgateToLogin()
@@ -63,8 +69,17 @@ class FingerPrintFragment : Fragment() {
         findNavController().navigate(action)
     }
     private fun enablePermission() {
-        val intent = Intent(Settings.ACTION_FINGERPRINT_ENROLL)
-        startActivity(intent)
+        val intent = if (Build.VERSION.SDK_INT >= P) {
+            Intent(Settings.ACTION_FINGERPRINT_ENROLL)
+        } else {
+            Intent().apply {
+                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                data = Uri.fromParts("package", requireContext().packageName, null)
+
+            }
+        }
+            startActivity(intent)
+
     }
 
     private fun requestPermission() {
@@ -86,9 +101,9 @@ class FingerPrintFragment : Fragment() {
         viewModel = FingerPrintViewModel(requireActivity().application)
         checkBiometricSupport()
         val biometricPrompt = BiometricPrompt.Builder(requireActivity())
-            .setTitle("Title of Prompt")
-            .setDescription("Uses FP")
-            .setNegativeButton("Cancel", requireActivity().mainExecutor, DialogInterface.OnClickListener { dialog, which ->
+            .setTitle("معالجة التشوه البصرى")
+            .setDescription("برجاء وضع بصمة الاصبع")
+            .setNegativeButton("الغاء", requireActivity().mainExecutor, DialogInterface.OnClickListener { dialog, which ->
                 notifyErrorToUser(getString(R.string.Authentication_Cancelled))
                 viewModel.logout()
                 navgateToLogin()
@@ -127,12 +142,12 @@ class FingerPrintFragment : Fragment() {
     private fun checkBiometricSupport(): Boolean {
         val keyguardManager = requireActivity().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         if (!keyguardManager.isDeviceSecure) {
-            notifyMsgToUser("Fingerprint authentication has not been enabled in settings")
+            notifyMsgToUser("برجاء السماح لصلاحية ستخدام بصمة الاصبع")
             enablePermission()
             return false
         }
         if (ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.USE_BIOMETRIC) != PackageManager.PERMISSION_GRANTED) {
-            notifyMsgToUser("Fingerprint Authentication Permission is not enabled")
+            notifyMsgToUser("رجاء السماح لصلاحية ستخدام بصمة الاصبع")
             requestPermission()
             return false
         }

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">معالجة التشوه البصرى</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="company_name"> شركة رينو لعمليات الصيانة </string>
     <string name="welcome_msg"> مرحبا بك فى تطبيق رينو لمعالجة التشوه البصرى</string>
     <string name="login_msg"> قم بتسجيل الدخول بحسابك الشخصى لتسجيل الخدمات من كافة الأدارات فى المؤسسة </string>

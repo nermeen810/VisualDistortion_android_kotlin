@@ -36,7 +36,6 @@ class EditDailyPreparationFragment : Fragment() {
     private lateinit var viewModel: EditDailyPViewModel
     private lateinit var binding: FragmentEditDailyPreparationBinding
     private lateinit var dailyPreparation: TodayDailyPrapration
-    //   private lateinit var addServiceResponse: AddServiceResponse
     private lateinit var equipmentList: ArrayList<String>
     private lateinit var workersTypeList: ArrayList<String>
     private lateinit var equipmentsAdapter: EquipmentsAdapter
@@ -81,7 +80,6 @@ class EditDailyPreparationFragment : Fragment() {
     }
 
     private fun setUpUI() {
-        // binding.serviceTypeNameTxt.text = "${serviceName}التحضير اليومى ل"
         equipmentsAdapter = EquipmentsAdapter(arrayListOf(), viewModel, requireContext())
         workerTypesAdapter = WorkerTypesAdapter(arrayListOf(), viewModel, requireContext())
         binding.equipmentsRecycle.apply {
@@ -136,7 +134,6 @@ class EditDailyPreparationFragment : Fragment() {
     }
 
     private fun observeData() {
-        // observeGetServicesData()
         observeGetDailyPreparation()
         observeEditDailyPreparation()
         observeLoading()
@@ -182,15 +179,7 @@ class EditDailyPreparationFragment : Fragment() {
         }
     }
 
-//    private fun observeGetServicesData() {
-//        viewModel.getServicesData.observe(viewLifecycleOwner) {
-//            it.let {
-//                addServiceResponse = it
-//                prepareMenues()
-//
-//            }
-//        }
-//    }
+
 
     private fun observeGetDailyPreparation() {
         viewModel.getDailyPreparation.observe(viewLifecycleOwner) {
@@ -203,7 +192,6 @@ class EditDailyPreparationFragment : Fragment() {
                     workerTypesAdapter.updateItems(workerTypesCountList)
                     prepareMenues()
                 }
-     //           prepareMenues()
 
             }
         }
@@ -212,10 +200,8 @@ class EditDailyPreparationFragment : Fragment() {
     private fun observeEditDailyPreparation() {
         viewModel.editDailyPreparation.observe(viewLifecycleOwner) {
             it?.let {
-                Log.e("ddddd",it.toString())
                 if(it)
                 {
-                    //  Log.e("ddddd",it.toString())
                     navigateToHome()
                 }
             }
@@ -373,11 +359,11 @@ class EditDailyPreparationFragment : Fragment() {
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
-//                    if (activity != null) {
-//                        activity!!.runOnUiThread {
-//                            showMessage(getString(R.string.internet))
-//                        }
-//                    }
+                    if (activity != null) {
+                        activity!!.runOnUiThread {
+                         //   showMessage(getString(R.string.internet))
+                        }
+                    }
                 }
 
                 override fun onLost(network: Network) {

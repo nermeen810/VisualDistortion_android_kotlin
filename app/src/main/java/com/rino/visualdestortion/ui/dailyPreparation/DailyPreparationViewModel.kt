@@ -23,7 +23,6 @@ class DailyPreparationViewModel (application: Application) : AndroidViewModel(ap
     private var _setError = MutableLiveData<String>()
     private var _loading = MutableLiveData<Int>(View.GONE)
     private var _getServicesData = MutableLiveData<GetDailyPraprationData>()
-//    private var _getDailyPreparation = MutableLiveData<TodayDailyPrapration?>()
     private var _setDailyPreparation = MutableLiveData<Boolean>()
     private var _equipmentsDeleteItem = MutableLiveData<EquipmentItem>()
     private var _workerTypeDeleteItem = MutableLiveData<EquipmentItem>()
@@ -37,8 +36,6 @@ class DailyPreparationViewModel (application: Application) : AndroidViewModel(ap
     val getServicesData: LiveData<GetDailyPraprationData>
         get() = _getServicesData
 
-//        val getDailyPreparation: MutableLiveData<TodayDailyPrapration?>
-//        get() = _getDailyPreparation
 
     val setDailyPreparation: MutableLiveData<Boolean>
           get() = _setDailyPreparation
@@ -73,6 +70,7 @@ class DailyPreparationViewModel (application: Application) : AndroidViewModel(ap
             }
         }
     }
+
     fun setDailyPreparation( WorkersTypesList: Map<Long, Int>,
                      equipmentList: Map<Long, Int>)  {
         _loading.postValue(View.VISIBLE)
@@ -100,30 +98,6 @@ class DailyPreparationViewModel (application: Application) : AndroidViewModel(ap
         }
 
     }
-//    fun getTodayPreparation() {
-//        _loading.postValue(View.VISIBLE)
-//        viewModelScope.launch(Dispatchers.IO) {
-//            when (val result = modelRepository.getDailyPreparation()) {
-//                is Result.Success -> {
-//                    _loading.postValue(View.GONE)
-//                    Log.i("getTodayPreparation:", "${result.data}")
-//                    _getDailyPreparation.postValue(result.data)
-//                    _loading.postValue(View.GONE)
-//
-//                }
-//                is Result.Error -> {
-//                    Log.e("getServiceData:", "${result.exception.message}")
-//                    _setError.postValue(result.exception.message)
-//                    _loading.postValue(View.GONE)
-//
-//                }
-//                is Result.Loading -> {
-//                    Log.i("getServiceData", "Loading")
-//                    _loading.postValue(View.VISIBLE)
-//                }
-//            }
-//        }
-//    }
 
     fun addDailyPreparation(dailyPreparation: DailyPreparation){
         viewModelScope.launch(Dispatchers.IO) {

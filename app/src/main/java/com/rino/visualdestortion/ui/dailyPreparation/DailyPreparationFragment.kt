@@ -6,7 +6,6 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,16 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.rino.visualdestortion.R
 import com.rino.visualdestortion.databinding.FragmentDailyPreparationBinding
-import com.rino.visualdestortion.model.localDataSource.room.DailyPreparation
-import com.rino.visualdestortion.model.pojo.addService.AddServiceResponse
 import com.rino.visualdestortion.model.pojo.dailyPraperation.GetDailyPraprationData
 import com.rino.visualdestortion.ui.home.MainActivity
 import com.rino.visualdestortion.utils.NetworkConnection
-import java.text.DateFormat
 import java.util.*
 
 
-class DailyPreparationFragment : Fragment()  {
+class DailyPreparationFragment : Fragment() {
     private lateinit var viewModel: DailyPreparationViewModel
     private lateinit var binding: FragmentDailyPreparationBinding
     private lateinit var addServiceResponse: GetDailyPraprationData
@@ -55,10 +51,12 @@ class DailyPreparationFragment : Fragment()  {
 
 
     }
+
     override fun onResume() {
         super.onResume()
         (activity as MainActivity).bottomNavigation.isGone = true
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,13 +69,15 @@ class DailyPreparationFragment : Fragment()  {
 
     private fun init() {
         setUpUI()
+        checkNetwork()
         initLists()
         registerConnectivityNetworkMonitor()
         observeData()
     }
 
+    // setup equipments recycle and workerType recycle and Next onclick
     private fun setUpUI() {
-       // binding.serviceTypeNameTxt.text = "${serviceName}التحضير اليومى ل"
+        nextOnClick()
         equipmentsAdapter = EquipmentsAdapter(arrayListOf(), viewModel, requireContext())
         workerTypesAdapter = WorkerTypesAdapter(arrayListOf(), viewModel, requireContext())
         binding.equipmentsRecycle.apply {
@@ -88,35 +88,28 @@ class DailyPreparationFragment : Fragment()  {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = workerTypesAdapter
         }
-        if(NetworkConnection.checkInternetConnection(requireContext())) {
+
+    }
+
+    private fun checkNetwork() {
+        if (NetworkConnection.checkInternetConnection(requireContext())) {
             viewModel.getServicesData()
-        }
-        else{
+        } else {
             showMessage(getString(R.string.no_internet))
         }
-        if (getArguments() != null) {
-            serviceName = getArguments()?.get("serviceName").toString()
-            serviceTypeId = getArguments()?.get("serviceID").toString()
-      //      binding.serviceTypeNameTxt.text = serviceName
+    }
 
-        }
+    private fun nextOnClick() {
         binding.nextButton.setOnClickListener {
-            if(validateData()) {
-                Log.e("WorkerTypes: ",workerTypesAdapter.getWorkerTypesMap().toString())
-                Log.e("Equipment: ",equipmentsAdapter.getEquipmentMap().toString())
-
-//                val date = DateFormat.getDateInstance().format(Calendar.getInstance().time).toString()
-//                viewModel.addDailyPreparation(DailyPreparation(serviceTypeId, date ,equipmentsAdapter.getEquipmentMap(),workerTypesAdapter.getWorkerTypesMap()))
-             if(NetworkConnection.checkInternetConnection(requireContext())) {
-                 viewModel.setDailyPreparation(
-                     workerTypesAdapter.getWorkerTypesMap(),
-                     equipmentsAdapter.getEquipmentMap()
-                 )
-                 //   Toast.makeText(requireContext(),"item : ${viewModel.getDailyPreparationByServiceID(serviceTypeId).toString()}",Toast.LENGTH_SHORT).show()
-             }
-                else{
+            if (validateData()) {
+                if (NetworkConnection.checkInternetConnection(requireContext())) {
+                    viewModel.setDailyPreparation(
+                        workerTypesAdapter.getWorkerTypesMap(),
+                        equipmentsAdapter.getEquipmentMap()
+                    )
+                } else {
                     showMessage(getString(R.string.no_internet))
-             }
+                }
             }
         }
     }
@@ -134,7 +127,6 @@ class DailyPreparationFragment : Fragment()  {
 
     private fun observeData() {
         observeSetDailyPreparation()
-     //   observeGetDailyPreparation()
         observeGetServicesData()
         observeLoading()
         observeShowError()
@@ -145,12 +137,9 @@ class DailyPreparationFragment : Fragment()  {
     private fun observeSetDailyPreparation() {
         viewModel.setDailyPreparation.observe(viewLifecycleOwner) {
             it?.let {
-                Log.e("ddddd",it.toString())
-              if(it)
-              {
-                //  Log.e("ddddd",it.toString())
-                  navigateToHome()
-              }
+                if (it) {
+                    navigateToHome()
+                }
             }
         }
     }
@@ -167,7 +156,7 @@ class DailyPreparationFragment : Fragment()  {
     private fun observeShowError() {
         viewModel.setError.observe(viewLifecycleOwner) {
             it?.let {
-               showMessage(it)
+                showMessage(it)
             }
         }
     }
@@ -200,27 +189,16 @@ class DailyPreparationFragment : Fragment()  {
         }
     }
 
-//    private fun observeGetDailyPreparation() {
-//        viewModel.getDailyPreparation.observe(viewLifecycleOwner) {
-//            it.let {
-//                if (it != null) {
-//                    dailyPreparation = it
-//                }
-//                prepareMenues()
-//
-//            }
-//        }
-//    }
-        private fun prepareMenues() {
-            setEquipmentsMenuItems()
-            setWorkersTypeMenuItems()
+    private fun prepareMenues() {
+        setEquipmentsMenuItems()
+        setWorkersTypeMenuItems()
     }
+
     private fun setEquipmentsMenuItems() {
         equipmentList.clear()
         var index = 0
         binding.equipmentsTextView.setText(R.string.select)
         addServiceResponse.equipmentList.forEach { equipment ->
-            //       for (equipment in dailyPreparation.equipmentTypes) {
             equipmentList.add(equipment.name.toString())
             equipmentsMap[equipment.name] = equipment.id
             index++
@@ -234,12 +212,12 @@ class DailyPreparationFragment : Fragment()  {
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val selectedItem = parent.getItemAtPosition(position).toString()
                 var item =
-                    equipmentsMap[selectedItem]?.toLong()?.let { EquipmentItem(selectedItem, it, 1) }
+                    equipmentsMap[selectedItem]?.toLong()
+                        ?.let { EquipmentItem(selectedItem, it, 1) }
                 if (item != null) {
                     equipmentsCountList.add(item)
                     equipmentList.remove(item.name)
                 }
-                //    Toast.makeText(requireContext(),"Selected : ${equipmentsCountList.(item)}",Toast.LENGTH_SHORT).show()
                 equipmentsAdapter.updateItems(equipmentsCountList)
             }
 
@@ -264,12 +242,12 @@ class DailyPreparationFragment : Fragment()  {
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val selectedItem = parent.getItemAtPosition(position).toString()
                 var item =
-                    workersTypeMap[selectedItem]?.toLong()?.let { EquipmentItem(selectedItem, it, 1) }
+                    workersTypeMap[selectedItem]?.toLong()
+                        ?.let { EquipmentItem(selectedItem, it, 1) }
                 if (item != null) {
                     workerTypesCountList.add(item)
                     workersTypeList.remove(item.name)
                     workerTypesAdapter.updateItems(workerTypesCountList)
-                    //Toast.makeText(requireContext(),"Selected : $selectedItem",Toast.LENGTH_SHORT).show()
                 }
 
             }
@@ -278,26 +256,24 @@ class DailyPreparationFragment : Fragment()  {
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun validateData(): Boolean {
         var flagEquipment = true
-        var flagworkerType = true
+        var flagWorkerType = true
         if (equipmentsCountList.isEmpty()) {
             binding.equipmentsTextInputLayout.error = getString(R.string.required_field)
             flagEquipment = false
-        }
-        else{
+        } else {
             binding.equipmentsTextInputLayout.error = null
             binding.equipmentsTextInputLayout.isErrorEnabled = false
             flagEquipment = true
         }
         if (workerTypesCountList.isEmpty()) {
             binding.workersTypeTextInputLayout.error = getString(R.string.required_field)
-            flagworkerType = false
-        }
-        else{
+            flagWorkerType = false
+        } else {
             binding.workersTypeTextInputLayout.error = null
             binding.workersTypeTextInputLayout.isErrorEnabled = false
             flagEquipment = true
         }
-        return (flagEquipment && flagworkerType)
+        return (flagEquipment && flagWorkerType)
     }
 
     private fun navigateToHome() {
@@ -305,6 +281,8 @@ class DailyPreparationFragment : Fragment()  {
         findNavController().navigate(action)
 
     }
+
+// snackBar message
     private fun showMessage(msg: String) {
         lifecycleScope.launchWhenResumed {
             Snackbar.make(requireView(), msg, Snackbar.LENGTH_INDEFINITE)
@@ -319,8 +297,10 @@ class DailyPreparationFragment : Fragment()  {
                 }.show()
         }
     }
+// network observer
     private fun registerConnectivityNetworkMonitor() {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val builder = NetworkRequest.Builder()
         connectivityManager.registerNetworkCallback(builder.build(),
             object : ConnectivityManager.NetworkCallback() {

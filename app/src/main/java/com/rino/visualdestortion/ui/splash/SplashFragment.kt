@@ -30,6 +30,7 @@ class SplashFragment : Fragment() {
         (activity as MainActivity).bottomNavigation.isGone = true
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,13 +40,15 @@ class SplashFragment : Fragment() {
         binding = FragmentSplashBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAnimation()
         splashSetup()
-     //   registerConnectivityNetworkMonitor()
+        //   registerConnectivityNetworkMonitor()
         observeData()
     }
+
     private fun observeData() {
         observeIsPrepared()
         observeShowError()
@@ -53,10 +56,9 @@ class SplashFragment : Fragment() {
 
     private fun observeIsPrepared() {
         viewModel.isPrepared.observe(viewLifecycleOwner) {
-            if (!viewModel.isLogin()){
+            if (!viewModel.isLogin()) {
                 navToWelcome()
-            }
-            else {
+            } else {
                 if (it) {
                     navToHome()
                     //   navigateToDailyPreparation()
@@ -67,10 +69,11 @@ class SplashFragment : Fragment() {
             }
         }
     }
+
     private fun observeShowError() {
         viewModel.setError.observe(viewLifecycleOwner) {
             it?.let {
-                if(it=="login required, logout and login again"||it =="Bad Request isDailyPrepared")
+                if (it == "login required, logout and login again" || it == "Bad Request isDailyPrepared")
                     navToWelcome()
                 else {
                     navToError()
@@ -96,10 +99,10 @@ class SplashFragment : Fragment() {
         }
     }
 
-    private fun splashSetup(){
-        CoroutineScope(Dispatchers.Default).launch{
+    private fun splashSetup() {
+        CoroutineScope(Dispatchers.Default).launch {
             delay(SPLASH_TIME_OUT)
-            CoroutineScope(Dispatchers.Main).launch{
+            CoroutineScope(Dispatchers.Main).launch {
                 if (viewModel.isLogin()) {
                     lifecycleScope.launchWhenResumed {
                         if (NetworkConnection.checkInternetConnection(requireContext())) {
@@ -107,8 +110,8 @@ class SplashFragment : Fragment() {
                         } else {
                             navToError()
                         }
-                    } }
-                else{
+                    }
+                } else {
                     navToWelcome()
                 }
 //                findNavController().popBackStack()

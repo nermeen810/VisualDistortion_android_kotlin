@@ -8,11 +8,11 @@ import com.google.gson.reflect.TypeToken
 class MapConverter {
     @TypeConverter
     fun stringToMap(value: String): Map<Long, Int> {
-        return Gson().fromJson(value,  object : TypeToken<Map<Long, Int>>() {}.type)
+        return Gson().fromJson(value, object : TypeToken<Map<Long, Int>>() {}.type)
     }
 
     @TypeConverter
     fun mapToString(value: Map<Long, Int>?): String {
-        return if(value == null) "" else Gson().toJson(value)
+        return if (value == null) "" else Gson().toJson(value)
     }
 }

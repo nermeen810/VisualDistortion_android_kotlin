@@ -64,8 +64,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
 
     }
 
-    fun navToHistoryById(serviceID: Int)
-    {
-         _navToHistoryOfTask.value = serviceID
+    fun navToHistoryById(serviceID: Int) {
+        _navToHistoryOfTask.value = serviceID
     }
 }

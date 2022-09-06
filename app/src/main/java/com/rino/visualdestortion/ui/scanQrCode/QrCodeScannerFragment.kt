@@ -41,7 +41,8 @@ class QrCodeScannerFragment : Fragment() {
 
 
     }
-    private  fun init(){
+
+    private fun init() {
         codeScanner = CodeScanner(requireContext(), binding.scannerView)
         codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
         codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
@@ -51,15 +52,15 @@ class QrCodeScannerFragment : Fragment() {
         codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
         codeScanner.isFlashEnabled = false // Whether to enable flash or not
         // Callbacks
-        if(isCameraPermissionGranted()) {
+        if (isCameraPermissionGranted()) {
             codeScanner.decodeCallback = DecodeCallback {
                 requireActivity().runOnUiThread {
-                    if(it.text.contains("Created by") &&it.text.contains("Service name")&&
-                        it.text.contains("Date created") &&it.text.contains("Locations")&&
-                        it.text.contains("Before image")&&it.text.contains("After image")){
+                    if (it.text.contains("Created by") && it.text.contains("Service name") &&
+                        it.text.contains("Date created") && it.text.contains("Locations") &&
+                        it.text.contains("Before image") && it.text.contains("After image")
+                    ) {
                         navToQrCodeResult(it.text)
-                    }
-                    else{
+                    } else {
                         codeScanner.releaseResources()
                         codeScanner.stopPreview()
                         codeScanner.startPreview()
@@ -75,8 +76,7 @@ class QrCodeScannerFragment : Fragment() {
 
 
             }
-        }
-        else{
+        } else {
             navtoAppSetting()
         }
         binding.scannerView.setOnClickListener {
@@ -108,7 +108,7 @@ class QrCodeScannerFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun showMessage(msg:String){
+    private fun showMessage(msg: String) {
         Snackbar.make(requireView(), msg, Snackbar.LENGTH_INDEFINITE)
             .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(
                 resources.getColor(

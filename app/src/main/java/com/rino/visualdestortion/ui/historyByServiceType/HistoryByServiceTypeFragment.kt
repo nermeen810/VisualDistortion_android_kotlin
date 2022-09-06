@@ -62,11 +62,9 @@ class HistoryByServiceTypeFragment : Fragment() {
         binding.historyRecycle.visibility = View.GONE
         viewModel = HistoryByServiceViewModel(requireActivity().application)
         historyList = arrayListOf()
-        historyAdapter = HistoryByServiceAdapter(historyList, viewModel,requireContext())
+        historyAdapter = HistoryByServiceAdapter(historyList, viewModel, requireContext())
         historyAdapter.updateItems(historyList)
         setUpUI()
-//        checkNetwork(serviceId)
-//        registerConnectivityNetworkMonitor()
         observeData()
         historyAdapter.updateItems(emptyList())
 
@@ -82,12 +80,11 @@ class HistoryByServiceTypeFragment : Fragment() {
 
 
     private fun observeHistoryData() {
-     //   viewModel.getHistoryData(serviceId)
         viewModel.getHistoryData.observe(viewLifecycleOwner) {
             it?.let {
                 historyByServiceIdResponse = it
-                Log.e("hasNextPage",it.hasNextPage.toString())
-                Log.e("totalPages",it.totalPages.toString())
+                Log.e("hasNextPage", it.hasNextPage.toString())
+                Log.e("totalPages", it.totalPages.toString())
                 it.data.let { it1 ->
                     historyAdapter.updateItems(it1)
                     historyList = it1
@@ -102,7 +99,6 @@ class HistoryByServiceTypeFragment : Fragment() {
     }
 
     private fun observeSearchHistoryData() {
-        //   viewModel.getHistoryData(serviceId)
         viewModel.getSearchHistoryData.observe(viewLifecycleOwner) {
             it?.let {
                 historyAdapter.clearList()
@@ -116,6 +112,7 @@ class HistoryByServiceTypeFragment : Fragment() {
             }
         }
     }
+
     private fun observeLoading() {
         viewModel.loading.observe(viewLifecycleOwner) {
             it?.let {
@@ -133,21 +130,21 @@ class HistoryByServiceTypeFragment : Fragment() {
     }
 
     private fun navToServiceDetails(serviceData: ServiceData) {
-        val action = HistoryByServiceTypeFragmentDirections.actionHistoryByIDToServiceDetails(serviceData)
+        val action =
+            HistoryByServiceTypeFragmentDirections.actionHistoryByIDToServiceDetails(serviceData)
         findNavController().navigate(action)
     }
 
     private fun observeShowError() {
         viewModel.setError.observe(viewLifecycleOwner) {
             it?.let {
-                if(it.equals("Bad Request")) {
+                if (it.equals("Bad Request")) {
                     binding.shimmer.stopShimmer()
                     binding.shimmer.visibility = View.GONE
                     binding.historyRecycle.visibility = View.GONE
                     binding.animationView.visibility = View.VISIBLE
                     binding.textNoData.visibility = View.VISIBLE
-                }
-                else{
+                } else {
                     Snackbar.make(requireView(), it, Snackbar.LENGTH_INDEFINITE)
                         .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(
                             resources.getColor(
@@ -165,13 +162,11 @@ class HistoryByServiceTypeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         (activity as MainActivity).bottomNavigation.isGone = true
-      //  checkNetwork(serviceId)
         registerConnectivityNetworkMonitor()
-     //   setPeriodTimeMenuItems()
     }
 
     private fun setUpUI() {
-   //     binding.mSearch.setQueryHint(getString(R.string.search_hint));
+        //     binding.mSearch.setQueryHint(getString(R.string.search_hint));
         binding.historyRecycle.visibility = View.VISIBLE
         binding.historyRecycle.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -182,8 +177,14 @@ class HistoryByServiceTypeFragment : Fragment() {
         binding.mSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
-                val taskNum = Constants.convertNumsToEnglish(query).toInt()
-                    viewModel.searchHistoryDataByService(SearchRequest(taskNum,serviceId,selectedPeriod))
+                    val taskNum = Constants.convertNumsToEnglish(query).toInt()
+                    viewModel.searchHistoryDataByService(
+                        SearchRequest(
+                            taskNum,
+                            serviceId,
+                            selectedPeriod
+                        )
+                    )
                 }
                 return false
             }
@@ -193,7 +194,7 @@ class HistoryByServiceTypeFragment : Fragment() {
                 return false
             }
         })
-  //      setPeriodTimeMenuItems()
+        //      setPeriodTimeMenuItems()
         setupPagination()
 
     }
@@ -213,8 +214,7 @@ class HistoryByServiceTypeFragment : Fragment() {
                     viewModel.viewLoading(View.VISIBLE)
                     if (NetworkConnection.checkInternetConnection(requireContext())) {
                         viewModel.getHistoryData(serviceId, page, selectedPeriod)
-                    }
-                    else{
+                    } else {
                         viewModel.viewLoading(View.GONE)
                         showMessage()
                     }
@@ -246,7 +246,8 @@ class HistoryByServiceTypeFragment : Fragment() {
     }
 
     private fun registerConnectivityNetworkMonitor() {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val builder = NetworkRequest.Builder()
         connectivityManager.registerNetworkCallback(builder.build(),
             object : ConnectivityManager.NetworkCallback() {
@@ -254,10 +255,10 @@ class HistoryByServiceTypeFragment : Fragment() {
                     super.onAvailable(network)
                     if (activity != null) {
                         activity!!.runOnUiThread {
-                                binding.noInternetLayout.visibility = View.GONE
-                                binding.linearLayout.visibility = View.VISIBLE
-                                historyAdapter.clearList()
-                                viewModel.getHistoryData(serviceId, 1,selectedPeriod)
+                            binding.noInternetLayout.visibility = View.GONE
+                            binding.linearLayout.visibility = View.VISIBLE
+                            historyAdapter.clearList()
+                            viewModel.getHistoryData(serviceId, 1, selectedPeriod)
                         }
                     }
                 }
@@ -266,9 +267,9 @@ class HistoryByServiceTypeFragment : Fragment() {
                     super.onLost(network)
                     if (activity != null) {
                         activity!!.runOnUiThread {
-                                showMessage()
-                                binding.noInternetLayout.visibility = View.VISIBLE
-                                binding.linearLayout.visibility = View.GONE
+                            showMessage()
+                            binding.noInternetLayout.visibility = View.VISIBLE
+                            binding.linearLayout.visibility = View.GONE
 
                         }
                     }
@@ -277,7 +278,7 @@ class HistoryByServiceTypeFragment : Fragment() {
         )
     }
 
-    private fun checkNetwork(id: Int ,page : Int =1) {
+    private fun checkNetwork(id: Int, page: Int = 1) {
         lifecycleScope.launchWhenResumed {
             if (NetworkConnection.checkInternetConnection(requireContext())) {
                 viewModel.getHistoryData(id, page)

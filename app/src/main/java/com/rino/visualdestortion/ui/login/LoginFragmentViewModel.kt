@@ -42,7 +42,7 @@ class LoginFragmentViewModel(application: Application) : AndroidViewModel(applic
             when (val result = loginRequest?.let { modelRepository.login(it) }) {
                 is Result.Success -> {
                     _loading.postValue(View.GONE)
-                   // isTodayPrepared()
+                    // isTodayPrepared()
                     Log.i("login:", "${result.data}")
                     if (result.data?.status == "Authenticated") {
                         withContext(Dispatchers.Main) {
@@ -73,7 +73,7 @@ class LoginFragmentViewModel(application: Application) : AndroidViewModel(applic
 
     }
 
-    fun isTodayPrepared(){
+    fun isTodayPrepared() {
         _loading.postValue(View.VISIBLE)
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = modelRepository.isDailyPrepared()) {
@@ -85,8 +85,7 @@ class LoginFragmentViewModel(application: Application) : AndroidViewModel(applic
                             _isPrepared.postValue(true)
                             Log.i("isPrepared:", (result.data?.isPrepared ?: true).toString())
                         }
-                    }
-                    else{
+                    } else {
                         _isPrepared.postValue(false)
                     }
                 }

@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ErrorViewModel (application: Application) : AndroidViewModel(application) {
+class ErrorViewModel(application: Application) : AndroidViewModel(application) {
     private val modelRepository: ModelRepo = ModelRepo(application)
     private val _isPrepared = MutableLiveData<Boolean>()
     private var _setError = MutableLiveData<String>()
@@ -28,7 +28,7 @@ class ErrorViewModel (application: Application) : AndroidViewModel(application) 
     val setError: LiveData<String>
         get() = _setError
 
-    fun isTodayPrepared(){
+    fun isTodayPrepared() {
 
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = modelRepository.isDailyPrepared()) {
@@ -40,8 +40,7 @@ class ErrorViewModel (application: Application) : AndroidViewModel(application) 
                             _isPrepared.postValue(true)
                             Log.i("isPrepared:", (result.data?.isPrepared ?: true).toString())
                         }
-                    }
-                    else{
+                    } else {
                         _isPrepared.postValue(false)
                     }
                 }
@@ -60,7 +59,7 @@ class ErrorViewModel (application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun isLogin():Boolean{
+    fun isLogin(): Boolean {
         return modelRepository.isLogin()
     }
 }

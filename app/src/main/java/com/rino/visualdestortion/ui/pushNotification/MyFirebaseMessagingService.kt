@@ -23,7 +23,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
-        Log.e("message","Message Received ...");
+        Log.e("message", "Message Received ...");
 
         if (remoteMessage.data.size > 0) {
             val title = remoteMessage.data["title"]
@@ -39,7 +39,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
-        Log.e("token","New Token :"+p0)
+        Log.e("token", "New Token :" + p0)
     }
 
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.rino.visualdestortion.model.reposatory.ModelRepo
 
-class HomeViewModel (application: Application) : AndroidViewModel(application) {
+class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val modelRepository: ModelRepo = ModelRepo(application)
 
     private var _setError = MutableLiveData<String>()

@@ -270,17 +270,19 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             result =
                                 Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }
@@ -343,17 +345,19 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             result =
                                 Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }
@@ -417,17 +421,19 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             result =
                                 Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }
@@ -490,19 +496,21 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                    }
-                        else {
+                        } else {
                             result =
-                               Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }
                     }
                     502 -> {
@@ -579,17 +587,19 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             result =
                                 Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }
@@ -662,17 +672,19 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             result =
                                 Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }
@@ -734,17 +746,19 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             result =
                                 Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }
@@ -788,8 +802,8 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                 Log.i("ModelRepository", "Error${response.errorBody()?.string()}")
                 when (response.code()) {
                     400 -> {
-                            Log.e("Error 400", "Bad Request")
-                            result = Result.Error(Exception("Bad Request isDailyPrepared"))
+                        Log.e("Error 400", "Bad Request")
+                        result = Result.Error(Exception("Bad Request isDailyPrepared"))
 
                     }
                     404 -> {
@@ -807,21 +821,23 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "Model Repo:",
                                 "isDailyPrepared:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
-                            val refreshResponse =refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                    when(refreshResponse){
-                        is Result.Success -> {
-                            Log.i("refresh token :", "${refreshResponse.data}")
-                            result = isDailyPrepared()
+                            val refreshResponse =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (refreshResponse) {
+                                is Result.Success -> {
+                                    Log.i("refresh token :", "${refreshResponse.data}")
+                                    result = isDailyPrepared()
 
-                        }
-                        is Result.Error -> {
-                            Log.e("refresh token :", "${refreshResponse.exception.message}")
-                            result = Result.Error(Exception("login required, logout and login again"))
+                                }
+                                is Result.Error -> {
+                                    Log.e("refresh token :", "${refreshResponse.exception.message}")
+                                    result =
+                                        Result.Error(Exception("login required, logout and login again"))
 
 
-                        }
+                                }
 
-                    }
+                            }
                         }
                     }
                     502 -> {
@@ -888,17 +904,19 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             result =
                                 Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }
@@ -962,17 +980,19 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             result =
                                 Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }
@@ -1035,17 +1055,19 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             result =
                                 Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }
@@ -1117,17 +1139,19 @@ class ModelRepo(application: Application) : RemoteRepo, LocalRepo {
                                 "isLogin:" + isLogin() + ", token:" + getToken() + ",  refresh token:" + getRefreshToken()
                             )
 
-                            val res = refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
-                            when(res) {
+                            val res =
+                                refreshToken(RefreshTokenRequest(getToken(), getRefreshToken()))
+                            when (res) {
                                 is Result.Success -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء اعادة المحاولة "))
                                 }
                                 is Result.Error -> {
-                                    result = Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
+                                    result =
+                                        Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             result =
                                 Result.Error(Exception("حدث حطأ برجاء تسجيل الخروج ثم اعادة تسجيل الدخول"))
                         }

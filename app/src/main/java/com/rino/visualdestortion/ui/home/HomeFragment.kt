@@ -26,12 +26,11 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onResume() {
         super.onResume()
         (activity as MainActivity).bottomNavigation.isGone = false
     }
-
-
 
 
 }

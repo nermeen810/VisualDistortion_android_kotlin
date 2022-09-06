@@ -18,7 +18,7 @@ import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
-interface ApiInterface{
+interface ApiInterface {
 
     suspend fun login(loginRequest: LoginRequest?): Response<LoginResponse>
 
@@ -28,33 +28,45 @@ interface ApiInterface{
 
     suspend fun resetPassword(resetpasswordRequest: ResetPasswordRequest): Response<ResponseOTP>
 
-    suspend fun setServiceForm(auth:String,serviceForm: FormData): Response<QRCode?>?
+    suspend fun setServiceForm(auth: String, serviceForm: FormData): Response<QRCode?>?
 
-    suspend fun getServiceForm(auth:String): Response<AddServiceResponse>
+    suspend fun getServiceForm(auth: String): Response<AddServiceResponse>
 
-    suspend fun getHomeData(auth:String): Response<HomeServicesResponse>
+    suspend fun getHomeData(auth: String): Response<HomeServicesResponse>
 
     suspend fun getHistoryData(auth: String): Response<AllHistoryResponse>
 
-    suspend fun getFilteredHistory(auth: String,serviceTypeId: Int, period:String ): Response<FilteredHistoryResponse>
+    suspend fun getFilteredHistory(
+        auth: String,
+        serviceTypeId: Int,
+        period: String
+    ): Response<FilteredHistoryResponse>
 
-    suspend fun getHistoryDataByService(auth: String ,serviceTypeId: Int,period:String,pageNumber:Int ): Response<HistoryByServiceIdResponse>
+    suspend fun getHistoryDataByService(
+        auth: String,
+        serviceTypeId: Int,
+        period: String,
+        pageNumber: Int
+    ): Response<HistoryByServiceIdResponse>
 
-    suspend fun searchHistoryDataByService( auth: String, searchRequest: SearchRequest ): Response<SearchResponse>
+    suspend fun searchHistoryDataByService(
+        auth: String,
+        searchRequest: SearchRequest
+    ): Response<SearchResponse>
 
     suspend fun isDailyPrepared(auth: String): Response<CheckDailyPreparationResponse>
 
     suspend fun getCreateDailyPreparation(auth: String): Response<GetDailyPraprationData>
 
-    suspend fun setDailyPreparation(auth: String
-                                    , WorkersTypesList : Map<Long, Int>
-                                    , equipmentList    : Map<Long, Int>):Response<Void>
+    suspend fun setDailyPreparation(
+        auth: String, WorkersTypesList: Map<Long, Int>, equipmentList: Map<Long, Int>
+    ): Response<Void>
 
     suspend fun getDailyPreparation(auth: String): Response<TodayDailyPrapration>
 
 
-    suspend fun editDailyPreparation(auth: String
-                                    , WorkersTypesList : Map<Long, Int>
-                                    , equipmentList    : Map<Long, Int>):Response<Void>
+    suspend fun editDailyPreparation(
+        auth: String, WorkersTypesList: Map<Long, Int>, equipmentList: Map<Long, Int>
+    ): Response<Void>
 
 }

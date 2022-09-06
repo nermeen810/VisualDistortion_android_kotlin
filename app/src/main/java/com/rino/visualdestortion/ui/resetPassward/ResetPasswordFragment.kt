@@ -53,10 +53,9 @@ class ResetPasswordFragment : Fragment() {
         binding.reuestOtpButton.setOnClickListener {
             email = binding.editTextEmail.text.toString()
             if (validateEmail()) {
-                if(NetworkConnection.checkInternetConnection(requireContext())){
+                if (NetworkConnection.checkInternetConnection(requireContext())) {
                     viewModel.requestOTP(email)
-                }
-                else{
+                } else {
                     showMessage(getString(R.string.no_internet))
                 }
             }
@@ -153,9 +152,9 @@ class ResetPasswordFragment : Fragment() {
         validatConfirmPassword()
         validateOTP()
         if (validateEmail() && validatPassword() && validateOTP() && validatConfirmPassword()) {
-            if(NetworkConnection.checkInternetConnection(requireContext())){
-                viewModel.resetPass(email, otp, newPass)            }
-            else{
+            if (NetworkConnection.checkInternetConnection(requireContext())) {
+                viewModel.resetPass(email, otp, newPass)
+            } else {
                 showMessage(getString(R.string.no_internet))
             }
 
@@ -163,15 +162,13 @@ class ResetPasswordFragment : Fragment() {
     }
 
     private fun validateOTP(): Boolean {
-      return if (otp.isEmpty()) {
+        return if (otp.isEmpty()) {
             binding.otpCodeTextInput.error = getString(R.string.required_field)
-             false
-        }
-       else if (otp.length != 4) {
+            false
+        } else if (otp.length != 4) {
             binding.otpCodeTextInput.error = getString(R.string.qrCode_must_4number)
-             false
-        }
-        else {
+            false
+        } else {
             binding.otpCodeTextInput.error = null
             binding.otpCodeTextInput.isErrorEnabled = false
             true
@@ -220,11 +217,11 @@ class ResetPasswordFragment : Fragment() {
     }
 
     private fun validatConfirmPassword(): Boolean {
-      return  if (newPassCongirm.isEmpty()) {
+        return if (newPassCongirm.isEmpty()) {
             binding.textInputConfirmPassword.error = getString(R.string.required_field)
             false
         } else if (newPass != newPassCongirm) {
-          //  Toast.makeText(requireActivity(), "newPass :" + newPass == newPassCongirm, Toast.LENGTH_SHORT).show()
+            //  Toast.makeText(requireActivity(), "newPass :" + newPass == newPassCongirm, Toast.LENGTH_SHORT).show()
             binding.textInputConfirmPassword.error = getString(R.string.pass_not_matched)
             false
         } else {
@@ -258,7 +255,8 @@ class ResetPasswordFragment : Fragment() {
     }
 
     private fun registerConnectivityNetworkMonitor() {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val builder = NetworkRequest.Builder()
         connectivityManager.registerNetworkCallback(builder.build(),
             object : ConnectivityManager.NetworkCallback() {

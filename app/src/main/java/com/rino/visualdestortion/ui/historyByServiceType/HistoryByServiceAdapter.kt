@@ -39,7 +39,6 @@ class HistoryByServiceAdapter (private var historyList: ArrayList<ServiceData>,
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.binding.serviceNumValue.text = Constants.convertNumsToArabic(historyList[position].serviceNumber.toString())
         holder.binding.dateFromTxt.text     = Constants.convertNumsToArabic(historyList[position].createdDate?:"")
-  //      holder.binding.timeTxt.text         = historyList[position].createdDate?: "00/00/00 00:00".split(" ").toList()[1]
         holder.binding.card.setOnClickListener {
          historyViewModel.navToServiceDetails(historyList[position])
         }

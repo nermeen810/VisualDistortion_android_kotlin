@@ -10,23 +10,27 @@ class DailyPreparationDataSource {
         dailyPreparationDao = DailyPreparationDB.getDatabase(application).DailyPreparationDao()
     }
 
-     fun getAllData(): Flow<List<DailyPreparation>> {
+    fun getAllData(): Flow<List<DailyPreparation>> {
         return dailyPreparationDao.getAllData()
     }
 
-     fun getDailyPreparation_By_ServiceTypeID(serviceTypeID: String,date :String): DailyPreparation?{
-        return dailyPreparationDao.getDailyPreparation_By_ServiceTypeID(serviceTypeID,date)
+    fun getDailyPreparation_By_ServiceTypeID(
+        serviceTypeID: String,
+        date: String
+    ): DailyPreparation? {
+        return dailyPreparationDao.getDailyPreparation_By_ServiceTypeID(serviceTypeID, date)
     }
 
-     fun insertDailyPreparation(dailyPreparation: DailyPreparation){
+    fun insertDailyPreparation(dailyPreparation: DailyPreparation) {
         dailyPreparationDao.insertDailyPreparation(dailyPreparation)
     }
 
-     fun deleteAll(){
-      dailyPreparationDao.deleteAll()
+    fun deleteAll() {
+        dailyPreparationDao.deleteAll()
     }
-     fun deleteBy_ServiceTypeID(serviceTypeID: String,date :String){
-        dailyPreparationDao.deleteBy_ServiceTypeID(serviceTypeID,date)
+
+    fun deleteBy_ServiceTypeID(serviceTypeID: String, date: String) {
+        dailyPreparationDao.deleteBy_ServiceTypeID(serviceTypeID, date)
     }
 
 }

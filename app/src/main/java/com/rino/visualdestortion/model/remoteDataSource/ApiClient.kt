@@ -9,7 +9,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class ApiClient {
     companion object {
-        private  var retrofit: Retrofit
+        private var retrofit: Retrofit
 
         init {
             retrofit = Retrofit.Builder()

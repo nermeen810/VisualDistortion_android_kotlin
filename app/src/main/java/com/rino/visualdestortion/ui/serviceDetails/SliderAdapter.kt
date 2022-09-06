@@ -11,7 +11,10 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 
-class SliderAdapter(private var context: Context,private var sliderDataArrayList:ArrayList<SliderData>):
+class SliderAdapter(
+    private var context: Context,
+    private var sliderDataArrayList: ArrayList<SliderData>
+) :
     SliderViewAdapter<SliderAdapter.SliderAdapterViewHolder>() {
 
     override fun getCount(): Int {
@@ -33,7 +36,8 @@ class SliderAdapter(private var context: Context,private var sliderDataArrayList
         position: Int
     ) {
         viewHolder.binding.titleTxt.text = sliderDataArrayList[position].title
-        Picasso.with(context).load(sliderDataArrayList[position].imgURL).into(viewHolder.binding.myimage)
+        Picasso.with(context).load(sliderDataArrayList[position].imgURL)
+            .into(viewHolder.binding.myimage)
     }
 
     inner class SliderAdapterViewHolder(val binding: SliderViewBinding) :

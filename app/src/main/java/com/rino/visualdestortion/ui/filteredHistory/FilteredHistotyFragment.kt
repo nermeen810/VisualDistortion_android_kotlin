@@ -48,7 +48,8 @@ class FilteredHistotyFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FilteredHistoryViewModel.lastSelectedPos = FilteredHistoryViewModel.periodTimeList_en.size -1
+        FilteredHistoryViewModel.lastSelectedPos =
+            FilteredHistoryViewModel.periodTimeList_en.size - 1
         arguments?.let {
             serviceId = arguments?.get("serviceID").toString().toInt()
         }
@@ -64,21 +65,30 @@ class FilteredHistotyFragment : Fragment() {
     }
 
     private fun init() {
-        periodTimeList_ar = arrayListOf(" السنة السابقة "," السنة الحالية "," الشهر السابق "," الشهر الحالى "," الاسبوع السابق "," الاسبوع الحالى "," الكل ")
-        periodTimeList_en = arrayListOf("lastyear","year","lastmonth","month","lastweek","week","all")
+        periodTimeList_ar = arrayListOf(
+            " السنة السابقة ",
+            " السنة الحالية ",
+            " الشهر السابق ",
+            " الشهر الحالى ",
+            " الاسبوع السابق ",
+            " الاسبوع الحالى ",
+            " الكل "
+        )
+        periodTimeList_en =
+            arrayListOf("lastyear", "year", "lastmonth", "month", "lastweek", "week", "all")
         binding.shimmer.startShimmer()
         binding.historyRecycle.visibility = View.GONE
         viewModel = FilteredHistoryViewModel(requireActivity().application)
         viewModel.serviceId = serviceId
         historyList = arrayListOf()
         searchHistoryList = arrayListOf()
-        historyAdapter = FilteredHistoryAdapter(historyList, viewModel,requireContext())
-        periodAdapter = PeriodAdapter(periodTimeList_ar,viewModel)
+        historyAdapter = FilteredHistoryAdapter(historyList, viewModel, requireContext())
+        periodAdapter = PeriodAdapter(periodTimeList_ar, viewModel)
         historyAdapter.updateItems(historyList)
-        searchHistoryAdapter = SubItemFilteredHistoryAdapter(searchHistoryList, viewModel,requireContext())
+        searchHistoryAdapter =
+            SubItemFilteredHistoryAdapter(searchHistoryList, viewModel, requireContext())
         searchHistoryAdapter.updateItems(searchHistoryList)
         setUpUI()
-//        checkNetwork(serviceId)
         registerConnectivityNetworkMonitor()
         observeData()
         historyAdapter.updateItems(emptyList())
@@ -99,17 +109,17 @@ class FilteredHistotyFragment : Fragment() {
         viewModel.getHistoryData.observe(viewLifecycleOwner) {
             it?.let {
                 historyByServiceIdResponse = it
-                    historyAdapter.updateItems( it.data)
-                    historyList = it.data
-                }
-                binding.shimmer.stopShimmer()
-                binding.shimmer.visibility = View.GONE
-                binding.searchHistoryRecycle.visibility = View.GONE
-                binding.historyRecycle.visibility = View.VISIBLE
-                binding.animationView.visibility = View.GONE
-                binding.textNoData.visibility = View.GONE
+                historyAdapter.updateItems(it.data)
+                historyList = it.data
             }
+            binding.shimmer.stopShimmer()
+            binding.shimmer.visibility = View.GONE
+            binding.searchHistoryRecycle.visibility = View.GONE
+            binding.historyRecycle.visibility = View.VISIBLE
+            binding.animationView.visibility = View.GONE
+            binding.textNoData.visibility = View.GONE
         }
+    }
 
     private fun observeSearchHistoryData() {
         viewModel.getSearchHistoryData.observe(viewLifecycleOwner) {
@@ -124,6 +134,7 @@ class FilteredHistotyFragment : Fragment() {
             }
         }
     }
+
     private fun observeLoading() {
         viewModel.loading.observe(viewLifecycleOwner) {
             it?.let {
@@ -149,35 +160,39 @@ class FilteredHistotyFragment : Fragment() {
     }
 
     private fun navToServiceDetails(serviceData: ServiceData) {
-        val action = HistoryByServiceTypeFragmentDirections.actionHistoryByIDToServiceDetails(serviceData)
+        val action =
+            HistoryByServiceTypeFragmentDirections.actionHistoryByIDToServiceDetails(serviceData)
         findNavController().navigate(action)
     }
 
 
     private fun navToSeeAll(period: String) {
-        val action = FilteredHistotyFragmentDirections.actionFilteredHistoryToHistoryByService(serviceId.toString(),period)
+        val action = FilteredHistotyFragmentDirections.actionFilteredHistoryToHistoryByService(
+            serviceId.toString(),
+            period
+        )
         findNavController().navigate(action)
     }
 
     private fun observeShowError() {
         viewModel.setError.observe(viewLifecycleOwner) {
             it?.let {
-                if(it.equals("No content")||it.equals("Bad Request")) {
+                if (it.equals("No content") || it.equals("Bad Request")) {
                     binding.shimmer.stopShimmer()
                     binding.shimmer.visibility = View.GONE
                     binding.historyRecycle.visibility = View.GONE
                     binding.searchHistoryRecycle.visibility = View.GONE
                     binding.animationView.visibility = View.VISIBLE
                     binding.textNoData.visibility = View.VISIBLE
-                }
-                else{
+                } else {
                     Snackbar.make(requireView(), it, Snackbar.LENGTH_INDEFINITE)
                         .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(
                             resources.getColor(
                                 R.color.teal
                             )
                         )
-                        .setActionTextColor(resources.getColor(R.color.white)).setAction(getString(R.string.cancel))
+                        .setActionTextColor(resources.getColor(R.color.white))
+                        .setAction(getString(R.string.cancel))
                         {
                         }.show()
                 }
@@ -190,17 +205,17 @@ class FilteredHistotyFragment : Fragment() {
         (activity as MainActivity).bottomNavigation.isGone = true
         //  checkNetwork(serviceId)
         registerConnectivityNetworkMonitor()
-      //  setPeriodTimeMenuItems()
+        //  setPeriodTimeMenuItems()
     }
 
     private fun setUpUI() {
-        //     binding.mSearch.setQueryHint(getString(R.string.search_hint));
         binding.historyRecycle.visibility = View.VISIBLE
         binding.historyRecycle.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = historyAdapter
         }
-        val linearLayoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+        val linearLayoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         linearLayoutManager.reverseLayout = false
         linearLayoutManager.stackFromEnd = true
         binding.periodRecycle.apply {
@@ -216,7 +231,7 @@ class FilteredHistotyFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
                     val taskNum = Constants.convertNumsToEnglish(query).toInt()
-                    viewModel.searchHistoryDataByService(SearchRequest(query.toInt(),serviceId))
+                    viewModel.searchHistoryDataByService(SearchRequest(query.toInt(), serviceId))
                 }
                 return false
             }
@@ -226,32 +241,8 @@ class FilteredHistotyFragment : Fragment() {
                 return false
             }
         })
-       //       setPeriodTimeMenuItems()
     }
 
-
-//    private fun setPeriodTimeMenuItems() {
-//        binding.periodTimeTextView.setText(R.string.period_time)
-//
-//        val adapter = ArrayAdapter(
-//            requireContext(), R.layout.dropdown_item,
-//            periodTimeList_ar
-//        )
-//        binding.periodTimeTextView.setAdapter(adapter)
-//        binding.periodTimeTextView.onItemClickListener =
-//            AdapterView.OnItemClickListener { parent, _, position, id ->
-//                val selectedItem = parent.getItemAtPosition(position).toString()
-//                historyAdapter.clearList()
-//                val index = periodTimeList_ar.indexOf(selectedItem)
-//                selectedPeriod = periodTimeList_en[index]
-//                if (NetworkConnection.checkInternetConnection(requireContext())) {
-//                    viewModel.getHistoryData(serviceId, periodTimeList_en[index])
-//                }
-//                else{
-//                    showMessage()
-//                }
-//            }
-//    }
 
     private fun showMessage() {
         lifecycleScope.launchWhenResumed {
@@ -273,7 +264,8 @@ class FilteredHistotyFragment : Fragment() {
     }
 
     private fun registerConnectivityNetworkMonitor() {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val builder = NetworkRequest.Builder()
         connectivityManager.registerNetworkCallback(builder.build(),
             object : ConnectivityManager.NetworkCallback() {
@@ -284,7 +276,10 @@ class FilteredHistotyFragment : Fragment() {
                             binding.noInternetLayout.visibility = View.GONE
                             binding.linearLayout.visibility = View.VISIBLE
                             historyAdapter.clearList()
-                            viewModel.getHistoryData(serviceId,FilteredHistoryViewModel.periodTimeList_en[FilteredHistoryViewModel.lastSelectedPos])
+                            viewModel.getHistoryData(
+                                serviceId,
+                                FilteredHistoryViewModel.periodTimeList_en[FilteredHistoryViewModel.lastSelectedPos]
+                            )
                         }
                     }
                 }
@@ -302,18 +297,6 @@ class FilteredHistotyFragment : Fragment() {
                 }
             }
         )
-    }
-
-    private fun checkNetwork(id: Int ) {
-        lifecycleScope.launchWhenResumed {
-            if (NetworkConnection.checkInternetConnection(requireContext())) {
-                viewModel.getHistoryData(id)
-            } else {
-                binding.textNoInternet.visibility = View.VISIBLE
-                binding.noNetworkResult.visibility = View.VISIBLE
-                binding.linearLayout.visibility = View.GONE
-            }
-        }
     }
 
 

@@ -68,7 +68,7 @@ class LoginFragment : Fragment() {
 
     private fun loginButtonOnClick() {
         binding.loginButton.setOnClickListener {
-         //   binding.progress.visibility = View.VISIBLE
+            //   binding.progress.visibility = View.VISIBLE
             email = binding.editTextEmail.text.toString()
             pass = binding.editTextPassword.text.toString()
             validateData()
@@ -97,32 +97,33 @@ class LoginFragment : Fragment() {
     private fun observeSuccessLogin() {
         viewModel.isLogin.observe(viewLifecycleOwner) {
             if (it) {
-             //   binding.progress.visibility = View.GONE
+                //   binding.progress.visibility = View.GONE
                 Toast.makeText(
                     requireActivity(),
                     getString(R.string.success_login),
                     Toast.LENGTH_SHORT
                 ).show()
                 viewModel.isTodayPrepared()
-             //   navigateToHome()
+                //   navigateToHome()
 
             } else {
                 Toast.makeText(
                     requireActivity(),
-                            getString(R.string.invalid_email_or_pass),
+                    getString(R.string.invalid_email_or_pass),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
     }
+
     private fun observeIsPrepared() {
         viewModel.isPrepared.observe(viewLifecycleOwner) {
             if (it) {
-                   navigateToHome()
-            //   navigateToDailyPreparation()
+                navigateToHome()
+                //   navigateToDailyPreparation()
             } else {
-                  navigateToDailyPreparation()
-              //   navigateToHome()
+                navigateToDailyPreparation()
+                //   navigateToHome()
             }
         }
     }
@@ -148,7 +149,7 @@ class LoginFragment : Fragment() {
     private fun observeShowError() {
         viewModel.setError.observe(viewLifecycleOwner) {
             it?.let {
-             showMessage(it)
+                showMessage(it)
             }
         }
     }
@@ -157,12 +158,11 @@ class LoginFragment : Fragment() {
         validateEmail()
         validatPassword()
         if (validateEmail() && validatPassword()) {
-             if(NetworkConnection.checkInternetConnection(requireContext())){
+            if (NetworkConnection.checkInternetConnection(requireContext())) {
                 viewModel.login(LoginRequest(email, pass))
-             }
-             else{
-                 showMessage(getString(R.string.no_internet))
-                }
+            } else {
+                showMessage(getString(R.string.no_internet))
+            }
         }
     }
 
@@ -227,8 +227,10 @@ class LoginFragment : Fragment() {
                 }.show()
         }
     }
+
     private fun registerConnectivityNetworkMonitor() {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val builder = NetworkRequest.Builder()
         connectivityManager.registerNetworkCallback(builder.build(),
             object : ConnectivityManager.NetworkCallback() {

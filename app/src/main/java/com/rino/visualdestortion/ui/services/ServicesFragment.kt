@@ -38,7 +38,7 @@ class ServicesFragment : Fragment() {
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             @SuppressLint("ResourceType")
             override fun handleOnBackPressed() {
-                 requireActivity().finish()
+                requireActivity().finish()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
@@ -56,7 +56,7 @@ class ServicesFragment : Fragment() {
 
     private fun init() {
         viewModel = ServiceViewModel(requireActivity().application)
-        serviceAdapter = ServiceAdapter(arrayListOf(), viewModel,requireActivity())
+        serviceAdapter = ServiceAdapter(arrayListOf(), viewModel, requireActivity())
         setUpUI()
         checkNetwork()
         registerConnectivityNetworkMonitor()
@@ -74,7 +74,7 @@ class ServicesFragment : Fragment() {
     }
 
     private fun observeService() {
-      //  viewModel.getServicesData()
+        //  viewModel.getServicesData()
         viewModel.getServicesData.observe(viewLifecycleOwner) {
             it?.let {
                 serviceAdapter.updateServices(it.serviceTypes)
@@ -105,7 +105,7 @@ class ServicesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         (activity as MainActivity).bottomNavigation.isGone = false
-        (activity as MainActivity).bottomNavigation.show(1,false)
+        (activity as MainActivity).bottomNavigation.show(1, false)
     }
 
     private fun observeNavToAddService() {
@@ -113,17 +113,20 @@ class ServicesFragment : Fragment() {
             it?.let {
                 val action = ServicesFragmentDirections.actionServiceToAddService(
                     it.name,
-                    it.id.toString())
+                    it.id.toString()
+                )
                 findNavController().navigate(action)
             }
         }
     }
+
     private fun observeNavToDailyPreparation() {
         viewModel.navToDailyPreparation.observe(viewLifecycleOwner) {
             it?.let {
                 val action = ServicesFragmentDirections.actionServiceToDailyprepration(
                     it.name,
-                    it.id.toString())
+                    it.id.toString()
+                )
                 findNavController().navigate(action)
             }
         }
@@ -140,7 +143,7 @@ class ServicesFragment : Fragment() {
     private fun observeShowError() {
         viewModel.setError.observe(viewLifecycleOwner) {
             it?.let {
-             showMessage(it)
+                showMessage(it)
             }
         }
     }
@@ -153,7 +156,8 @@ class ServicesFragment : Fragment() {
                         R.color.teal
                     )
                 )
-                .setActionTextColor(resources.getColor(R.color.white)).setAction(getString(R.string.close))
+                .setActionTextColor(resources.getColor(R.color.white))
+                .setAction(getString(R.string.close))
                 {
                 }.show()
         }
@@ -161,7 +165,8 @@ class ServicesFragment : Fragment() {
 
     private fun registerConnectivityNetworkMonitor() {
         if (requireContext() != null) {
-            val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectivityManager =
+                requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val builder = NetworkRequest.Builder()
             connectivityManager.registerNetworkCallback(builder.build(),
                 object : ConnectivityManager.NetworkCallback() {
@@ -194,7 +199,7 @@ class ServicesFragment : Fragment() {
         }
     }
 
-    private fun checkNetwork(){
+    private fun checkNetwork() {
         if (NetworkConnection.checkInternetConnection(requireContext())) {
             viewModel.getServicesData()
         } else {

@@ -8,7 +8,10 @@ import com.rino.visualdestortion.databinding.ItemDetailsBinding
 import com.rino.visualdestortion.model.pojo.history.EquipmentList
 import com.rino.visualdestortion.utils.Constants
 
-class EquipmentListAdapter (private var itemsList: ArrayList<EquipmentList>, private var context: Context) :
+class EquipmentListAdapter(
+    private var itemsList: ArrayList<EquipmentList>,
+    private var context: Context
+) :
     RecyclerView.Adapter<EquipmentListAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -31,7 +34,8 @@ class EquipmentListAdapter (private var itemsList: ArrayList<EquipmentList>, pri
 
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.binding.itemCount.text = Constants.convertNumsToArabic( itemsList[position].count.toString())
+        holder.binding.itemCount.text =
+            Constants.convertNumsToArabic(itemsList[position].count.toString())
         holder.binding.nameTxt.text = itemsList[position].name
 
     }
@@ -46,7 +50,6 @@ class EquipmentListAdapter (private var itemsList: ArrayList<EquipmentList>, pri
 
     inner class ItemViewHolder(val binding: ItemDetailsBinding) :
         RecyclerView.ViewHolder(binding.root)
-
 
 
 }

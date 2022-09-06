@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class Permissions(
 
-    @SerializedName("route"   ) var route   : String  ,
-    @SerializedName("actions" ) var actions : ArrayList<String> = arrayListOf()
+    @SerializedName("route") var route: String,
+    @SerializedName("actions") var actions: ArrayList<String> = arrayListOf()
 )

@@ -40,16 +40,17 @@ class HistoryByServiceViewModel(application: Application) : AndroidViewModel(app
     val getHistoryData: LiveData<HistoryByServiceIdResponse?>
         get() = _getHistoryData
 
-    fun navToServiceDetails(serviceData:ServiceData)
-    {
+    fun navToServiceDetails(serviceData: ServiceData) {
         _navToTaskDetails.value = serviceData
     }
-    fun getHistoryData(serviceID:Int,pageNumber: Int = 1, period :String = "all") {
-       // _loading.postValue(View.VISIBLE)
+
+    fun getHistoryData(serviceID: Int, pageNumber: Int = 1, period: String = "all") {
+        // _loading.postValue(View.VISIBLE)
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result = modelRepository.getHistoryDataByService(serviceID,period,pageNumber)) {
+            when (val result =
+                modelRepository.getHistoryDataByService(serviceID, period, pageNumber)) {
                 is Result.Success -> {
-                   // _loading.postValue(View.GONE)
+                    // _loading.postValue(View.GONE)
                     Log.i("getHistoryData:", "${result.data}")
                     _getHistoryData.postValue(result.data)
                     _loading.postValue(View.GONE)
@@ -68,8 +69,9 @@ class HistoryByServiceViewModel(application: Application) : AndroidViewModel(app
             }
         }
     }
+
     fun searchHistoryDataByService(searchRequest: SearchRequest) {
-         _loading.postValue(View.VISIBLE)
+        _loading.postValue(View.VISIBLE)
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = modelRepository.searchHistoryDataByService(searchRequest)) {
                 is Result.Success -> {
@@ -93,7 +95,8 @@ class HistoryByServiceViewModel(application: Application) : AndroidViewModel(app
         }
 
     }
-    fun viewLoading(loading:Int){
+
+    fun viewLoading(loading: Int) {
         _loading.value = loading
     }
 }

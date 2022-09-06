@@ -12,7 +12,7 @@ import com.rino.visualdestortion.R
 import com.rino.visualdestortion.ui.services.ServicesFragment
 
 class MainActivity : AppCompatActivity() {
-    lateinit var bottomNavigation : MeowBottomNavigation
+    lateinit var bottomNavigation: MeowBottomNavigation
     lateinit var handler: Handler
     lateinit var runnable: Runnable
 
@@ -22,9 +22,8 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-       // navController.navigate(R.id.splashFragment)
         bottomNavigation = findViewById(R.id.meowBottomNavigation)
-        navigationSetup(navController,bottomNavigation)
+        navigationSetup(navController, bottomNavigation)
         handler = Handler()
         runnable = Runnable {
             Toast.makeText(this, "the session ended please login again", Toast.LENGTH_SHORT).show()
@@ -33,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
         startHandler()
     }
+
     override fun onUserInteraction() {
         super.onUserInteraction()
         stopHandler()
@@ -43,43 +43,55 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         stopHandler()
     }
+
     private fun stopHandler() {
         handler.removeCallbacks(runnable)
     }
+
     private fun startHandler() {
         handler.postDelayed(runnable, 240000.toLong())
     }
-    private fun navigationSetup(navController: NavController, bottomNavigation: MeowBottomNavigation){
+
+    private fun navigationSetup(
+        navController: NavController,
+        bottomNavigation: MeowBottomNavigation
+    ) {
         bottomNavigation.add(MeowBottomNavigation.Model(1, R.drawable.ic_baseline_home_24))
         bottomNavigation.add(MeowBottomNavigation.Model(2, R.drawable.ic_baseline_history_24))
-        bottomNavigation.add(MeowBottomNavigation.Model(3, R.drawable.ic_baseline_qr_code_scanner_24))
+        bottomNavigation.add(
+            MeowBottomNavigation.Model(
+                3,
+                R.drawable.ic_baseline_qr_code_scanner_24
+            )
+        )
         bottomNavigation.add(MeowBottomNavigation.Model(4, R.drawable.ic_baseline_settings_24))
         bottomNavigation.show(1)
         bottomNavigation.setOnClickMenuListener { model: MeowBottomNavigation.Model? ->
-            when(model?.id){
-                1->{
+            when (model?.id) {
+                1 -> {
                     navController.popBackStack()
                     navController.navigate(R.id.servicesFragment)
                 }
-                2->{
+                2 -> {
                     navController.popBackStack()
                     navController.navigate(R.id.historyFragment)
                 }
-                3->{
+                3 -> {
                     navController.popBackStack()
                     navController.navigate(R.id.qrCodeScannerFragment)
 
                 }
-                4->{
+                4 -> {
                     navController.popBackStack()
                     navController.navigate(R.id.settingFragment)
                 }
-                else->{
+                else -> {
 
                 }
             }
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

@@ -62,6 +62,7 @@ class ServiceAdapter(
 //        }
         servicesList[position].let { it1 -> serviceViewModel.navToAddService(it1) }
     }
+
     fun updateServices(newFavoriteList: List<ServiceTypes>) {
         servicesList.clear()
         servicesList.addAll(newFavoriteList)

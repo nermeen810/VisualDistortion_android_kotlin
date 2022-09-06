@@ -36,9 +36,9 @@ import java.util.*
 
 class QRCodeFragment : Fragment() {
     private lateinit var binding: FragmentQRCodeBinding
-    private lateinit var qrCodeImg:Bitmap
+    private lateinit var qrCodeImg: Bitmap
     private var url = ""
-    private var serviceId =""
+    private var serviceId = ""
     private var serviceName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +60,8 @@ class QRCodeFragment : Fragment() {
         init()
         return binding.root
     }
-    private fun init(){
+
+    private fun init() {
         registerConnectivityNetworkMonitor()
         if (getArguments() != null) {
             // The getPrivacyPolicyLink() method will be created automatically.
@@ -68,39 +69,38 @@ class QRCodeFragment : Fragment() {
             serviceId = getArguments()?.get("serviceID").toString()
             serviceName = getArguments()?.get("serviceName").toString()
             val source = arguments?.get("source").toString()
-            if(source.equals("history")){
+            if (source.equals("history")) {
                 binding.backImg.visibility = View.GONE
             }
             Log.e("QRCodeURL", url)
-            if(NetworkConnection.checkInternetConnection(requireContext())){
+            if (NetworkConnection.checkInternetConnection(requireContext())) {
                 downloadQRCode(url)
-            }
-            else{
+            } else {
                 showMessage(getString(R.string.no_internet))
             }
         }
-        binding.backImg.setOnClickListener{
+        binding.backImg.setOnClickListener {
             navTAddService()
         }
         binding.navigateToHome.setOnClickListener {
             navigateToHome()
         }
-        binding.shareInWhatsapp.setOnClickListener{
+        binding.shareInWhatsapp.setOnClickListener {
             shareQRCodeInWhatsapp()
         }
     }
 
     private fun navTAddService() {
-        val action = QRCodeFragmentDirections.actionQRCodeToAddForm(serviceName,serviceId)
+        val action = QRCodeFragmentDirections.actionQRCodeToAddForm(serviceName, serviceId)
         findNavController().navigate(action)
     }
 
     private fun shareQRCodeInWhatsapp() {
-        val bitmap = ( binding.qrCodeImg.drawable.toBitmap())
+        val bitmap = (binding.qrCodeImg.drawable.toBitmap())
         val imgUri: Uri = getImageUri(bitmap)
         var whatsappIntent = Intent(Intent.ACTION_SEND)
         whatsappIntent.setPackage("com.whatsapp")
-        whatsappIntent.putExtra(Intent.EXTRA_TEXT, "\n ${getString(R.string.QRCode)} \n"+url)
+        whatsappIntent.putExtra(Intent.EXTRA_TEXT, "\n ${getString(R.string.QRCode)} \n" + url)
         whatsappIntent.putExtra(Intent.EXTRA_STREAM, imgUri)
         whatsappIntent.type = "image/*"
         whatsappIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -112,6 +112,7 @@ class QRCodeFragment : Fragment() {
 
         }
     }
+
     private fun showWarningDialog(message: String) {
         AlertDialog.Builder(requireContext())
             .setMessage(message)
@@ -120,6 +121,7 @@ class QRCodeFragment : Fragment() {
             .setCancelable(true)
             .create().show()
     }
+
     fun getImageUri(inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
@@ -128,7 +130,7 @@ class QRCodeFragment : Fragment() {
         val path = MediaStore.Images.Media.insertImage(
             requireContext().contentResolver,
             inImage,
-            "QRCode_IMG_" + currentDate.toString().replace(" ",""),
+            "QRCode_IMG_" + currentDate.toString().replace(" ", ""),
             null
         )
 //        val path = MediaStore.Images.Media.insertImage(
@@ -154,9 +156,11 @@ class QRCodeFragment : Fragment() {
                         binding.progress.setVisibility(View.GONE)
                     }
                 }
+
                 override fun onError() {}
             })
-   }
+    }
+
     private fun showMessage(msg: String) {
         lifecycleScope.launchWhenResumed {
             Snackbar.make(requireView(), msg, Snackbar.LENGTH_INDEFINITE)
@@ -174,8 +178,10 @@ class QRCodeFragment : Fragment() {
                 }.show()
         }
     }
+
     private fun registerConnectivityNetworkMonitor() {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val builder = NetworkRequest.Builder()
         connectivityManager.registerNetworkCallback(builder.build(),
             object : ConnectivityManager.NetworkCallback() {

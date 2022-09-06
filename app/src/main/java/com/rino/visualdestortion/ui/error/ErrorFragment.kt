@@ -39,7 +39,8 @@ class ErrorFragment : Fragment() {
         init()
         return binding.root
     }
-    private fun init(){
+
+    private fun init() {
         registerConnectivityNetworkMonitor()
         tryAgainOnClick()
         observeIsPrepared()
@@ -48,12 +49,11 @@ class ErrorFragment : Fragment() {
 
     private fun tryAgainOnClick() {
         binding.textTryAgain.text = getString(R.string.try_again)
-        binding.tryAgainImg.setOnClickListener{
-            if(NetworkConnection.checkInternetConnection(requireContext())){
+        binding.tryAgainImg.setOnClickListener {
+            if (NetworkConnection.checkInternetConnection(requireContext())) {
                 binding.textTryAgain.text = getString(R.string.connecting)
                 viewModel.isTodayPrepared()
-            }
-            else{
+            } else {
                 showMessage(getString(R.string.no_internet))
             }
         }
@@ -66,27 +66,29 @@ class ErrorFragment : Fragment() {
                     R.color.teal
                 )
             )
-            .setActionTextColor(resources.getColor(R.color.white)).setAction(getString(
-                R.string.dismiss))
+            .setActionTextColor(resources.getColor(R.color.white)).setAction(
+                getString(
+                    R.string.dismiss
+                )
+            )
             {
             }.show()
     }
+
     private fun observeIsPrepared() {
         viewModel.isPrepared.observe(viewLifecycleOwner) {
-            if (!viewModel.isLogin()){
+            if (!viewModel.isLogin()) {
                 navToWelcome()
-            }
-            else {
+            } else {
                 if (it) {
                     navToHome()
-                    //   navigateToDailyPreparation()
                 } else {
                     navigateToDailyPreparation()
-                    //    navToHome()
                 }
             }
         }
     }
+
     private fun navToHome() {
         val action = ErrorFragmentDirections.actionErrorToServiceFragment()
         findNavController().navigate(action)
@@ -103,8 +105,10 @@ class ErrorFragment : Fragment() {
             findNavController().navigate(action)
         }
     }
+
     private fun registerConnectivityNetworkMonitor() {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val builder = NetworkRequest.Builder()
         connectivityManager.registerNetworkCallback(builder.build(),
             object : ConnectivityManager.NetworkCallback() {
@@ -114,9 +118,8 @@ class ErrorFragment : Fragment() {
                     if (activity != null) {
                         activity!!.runOnUiThread {
                             if (viewModel.isLogin()) {
-                                    viewModel.isTodayPrepared()
-                            }
-                            else{
+                                viewModel.isTodayPrepared()
+                            } else {
                                 navToWelcome()
                             }
                         }

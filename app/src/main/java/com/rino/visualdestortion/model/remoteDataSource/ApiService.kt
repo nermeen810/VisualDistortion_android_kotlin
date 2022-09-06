@@ -35,21 +35,22 @@ interface ApiService {
 
     @Multipart
     @POST("api/form/storeForm")
-    suspend fun setServiceForm(@Header("Authorization"   ) auth: String
-                               ,@Part("serviceTypeId"   ) serviceTypeId: RequestBody
-                               ,@Part("sectorName"      ) sectorName: RequestBody
-                               ,@Part("municipalityName") municipalityName: RequestBody
-                               ,@Part("districtName"    ) districtName: RequestBody
-                               ,@Part("streetName"      ) streetName: RequestBody
-                               ,@Part("lat"             ) lat: RequestBody
-                               ,@Part("lng"             ) lng: RequestBody
-                               ,@Part beforeImg: MultipartBody.Part
-                               ,@Part duringImg: MultipartBody.Part?
-                               ,@Part afterImg: MultipartBody.Part
-                               ,@Part("mSquare"         ) mSquare: Int?
-                               ,@Part("mCube"           ) mCube: Float?
-                               ,@Part("numberR"         ) numberR: Int?
-                               ,@Part("notes"           ) notes: RequestBody ?
+    suspend fun setServiceForm(
+        @Header("Authorization") auth: String,
+        @Part("serviceTypeId") serviceTypeId: RequestBody,
+        @Part("sectorName") sectorName: RequestBody,
+        @Part("municipalityName") municipalityName: RequestBody,
+        @Part("districtName") districtName: RequestBody,
+        @Part("streetName") streetName: RequestBody,
+        @Part("lat") lat: RequestBody,
+        @Part("lng") lng: RequestBody,
+        @Part beforeImg: MultipartBody.Part,
+        @Part duringImg: MultipartBody.Part?,
+        @Part afterImg: MultipartBody.Part,
+        @Part("mSquare") mSquare: Int?,
+        @Part("mCube") mCube: Float?,
+        @Part("numberR") numberR: Int?,
+        @Part("notes") notes: RequestBody?
 
     ): Response<QRCode?>
 
@@ -58,44 +59,60 @@ interface ApiService {
 //                               ,@Part("Percentage"      ) percentage: RequestBody ?
 
     @GET("api/form/createFrom")
-    suspend fun getServiceForm( @Header("Authorization") auth: String): Response<AddServiceResponse>
+    suspend fun getServiceForm(@Header("Authorization") auth: String): Response<AddServiceResponse>
 
     @GET("api/home/HomeApi")
-    suspend fun getHomeData( @Header("Authorization") auth: String): Response<HomeServicesResponse>
+    suspend fun getHomeData(@Header("Authorization") auth: String): Response<HomeServicesResponse>
 
     @GET("api/History/GetServiceTypeHistory")
-    suspend fun getHistoryData( @Header("Authorization") auth: String): Response<AllHistoryResponse>
+    suspend fun getHistoryData(@Header("Authorization") auth: String): Response<AllHistoryResponse>
 
     @GET("api/History/serviceTypeHistory/{serviceTypeId}")
-    suspend fun getFilteredHistory(@Header("Authorization") auth: String, @Path("serviceTypeId") serviceTypeId: Int,@Query("period") period:String ): Response<FilteredHistoryResponse>
+    suspend fun getFilteredHistory(
+        @Header("Authorization") auth: String,
+        @Path("serviceTypeId") serviceTypeId: Int,
+        @Query("period") period: String
+    ): Response<FilteredHistoryResponse>
 
     @GET("api/History/SeeAllHistory/{serviceTypeId}")
-    suspend fun getHistoryDataByService(@Header("Authorization") auth: String, @Path("serviceTypeId") serviceTypeId: Int,@Query("period") period:String, @Query("pageNumber") pageNumber:Int  ): Response<HistoryByServiceIdResponse>
+    suspend fun getHistoryDataByService(
+        @Header("Authorization") auth: String,
+        @Path("serviceTypeId") serviceTypeId: Int,
+        @Query("period") period: String,
+        @Query("pageNumber") pageNumber: Int
+    ): Response<HistoryByServiceIdResponse>
 
     @POST("api/History/SearchByServiceId")
-    suspend fun searchHistoryDataByService(@Header("Authorization") auth: String, @Body searchRequest: SearchRequest ): Response<SearchResponse>
+    suspend fun searchHistoryDataByService(
+        @Header("Authorization") auth: String,
+        @Body searchRequest: SearchRequest
+    ): Response<SearchResponse>
 
 
     @GET("api/DailyPreparations/isPrepared")
-    suspend fun isDailyPrepared( @Header("Authorization") auth: String): Response<CheckDailyPreparationResponse>
+    suspend fun isDailyPrepared(@Header("Authorization") auth: String): Response<CheckDailyPreparationResponse>
 
 
     @Multipart
     @POST("api/DailyPreparations/")
-    suspend fun setDailyPreparation(@Header("Authorization"   ) auth: String
-                               ,@PartMap WorkersTypesList : HashMap<String, RequestBody>
-                               ,@PartMap equipmentList : HashMap<String, RequestBody>):Response<Void>
+    suspend fun setDailyPreparation(
+        @Header("Authorization") auth: String,
+        @PartMap WorkersTypesList: HashMap<String, RequestBody>,
+        @PartMap equipmentList: HashMap<String, RequestBody>
+    ): Response<Void>
 
     @GET("api/DailyPreparations")
-    suspend fun getDailyPreparation( @Header("Authorization") auth: String): Response<TodayDailyPrapration>
+    suspend fun getDailyPreparation(@Header("Authorization") auth: String): Response<TodayDailyPrapration>
 
     @GET("api/DailyPreparations/DailyPrepData")
-    suspend fun getCreateDailyPreparation( @Header("Authorization") auth: String): Response<GetDailyPraprationData>
+    suspend fun getCreateDailyPreparation(@Header("Authorization") auth: String): Response<GetDailyPraprationData>
 
 
     @Multipart
     @PUT("api/DailyPreparations/")
-    suspend fun editDailyPreparation(@Header("Authorization"   ) auth: String
-                                    ,@PartMap WorkersTypesList : HashMap<String, RequestBody>
-                                    ,@PartMap equipmentList : HashMap<String, RequestBody>):Response<Void>
+    suspend fun editDailyPreparation(
+        @Header("Authorization") auth: String,
+        @PartMap WorkersTypesList: HashMap<String, RequestBody>,
+        @PartMap equipmentList: HashMap<String, RequestBody>
+    ): Response<Void>
 }

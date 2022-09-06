@@ -13,7 +13,7 @@ import com.rino.visualdestortion.model.reposatory.ModelRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FilteredHistoryViewModel (application: Application) : AndroidViewModel(application) {
+class FilteredHistoryViewModel(application: Application) : AndroidViewModel(application) {
     private val modelRepository: ModelRepo = ModelRepo(application)
     private var _setError = MutableLiveData<String>()
     private var _loading = MutableLiveData<Int>(View.GONE)
@@ -22,11 +22,13 @@ class FilteredHistoryViewModel (application: Application) : AndroidViewModel(app
     private var _navToSeeAll: MutableLiveData<String> = MutableLiveData()
     private var _navToTaskDetails: MutableLiveData<ServiceData> = MutableLiveData()
     var serviceId = 0
-   companion object {
-    var periodTimeList_en =
-        arrayListOf("lastyear","year","lastmonth","month","lastweek","week","all")
-       var lastSelectedPos = periodTimeList_en.size-1
-   }
+
+    companion object {
+        var periodTimeList_en =
+            arrayListOf("lastyear", "year", "lastmonth", "month", "lastweek", "week", "all")
+        var lastSelectedPos = periodTimeList_en.size - 1
+    }
+
     val navToTaskDetails: LiveData<ServiceData>
         get() = _navToTaskDetails
 
@@ -45,19 +47,18 @@ class FilteredHistoryViewModel (application: Application) : AndroidViewModel(app
     val getHistoryData: LiveData<FilteredHistoryResponse?>
         get() = _getHistoryData
 
-    fun navToSeeAll(period: String)
-    {
+    fun navToSeeAll(period: String) {
         _navToSeeAll.value = period
     }
 
     fun navToServiceDetails(item: ServiceData) {
-       _navToTaskDetails.value = item
+        _navToTaskDetails.value = item
     }
 
-    fun getHistoryData(serviceID:Int, period :String = "all") {
-         _loading.postValue(View.VISIBLE)
+    fun getHistoryData(serviceID: Int, period: String = "all") {
+        _loading.postValue(View.VISIBLE)
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result = modelRepository.getFilteredHistory(serviceID,period)) {
+            when (val result = modelRepository.getFilteredHistory(serviceID, period)) {
                 is Result.Success -> {
                     // _loading.postValue(View.GONE)
                     Log.i("getHistoryData:", "${result.data}")
@@ -80,7 +81,7 @@ class FilteredHistoryViewModel (application: Application) : AndroidViewModel(app
     }
 
     fun searchHistoryDataByService(searchRequest: SearchRequest) {
-         _loading.postValue(View.VISIBLE)
+        _loading.postValue(View.VISIBLE)
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = modelRepository.searchHistoryDataByService(searchRequest)) {
                 is Result.Success -> {
@@ -105,8 +106,5 @@ class FilteredHistoryViewModel (application: Application) : AndroidViewModel(app
 
     }
 
-    fun viewLoading(loading:Int){
-        _loading.value = loading
-    }
 
 }

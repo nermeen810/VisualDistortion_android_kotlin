@@ -16,12 +16,11 @@ import com.rino.visualdestortion.model.reposatory.ModelRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class EditDailyPViewModel (application: Application) : AndroidViewModel(application) {
+class EditDailyPViewModel(application: Application) : AndroidViewModel(application) {
     private val modelRepository: ModelRepo = ModelRepo(application)
 
     private var _setError = MutableLiveData<String>()
-    private var _loading = MutableLiveData<Int>(View.GONE)
-    //   private var _getServicesData = MutableLiveData<AddServiceResponse>()
+    private var _loading = MutableLiveData(View.GONE)
     private var _getDailyPreparation = MutableLiveData<TodayDailyPrapration?>()
     private var _editDailyPreparation = MutableLiveData<Boolean>()
     private var _equipmentsDeleteItem = MutableLiveData<PrepEquipments>()
@@ -32,9 +31,6 @@ class EditDailyPViewModel (application: Application) : AndroidViewModel(applicat
 
     val setError: LiveData<String>
         get() = _setError
-
-//    val getServicesData: LiveData<AddServiceResponse>
-//        get() = _getServicesData
 
     val getDailyPreparation: MutableLiveData<TodayDailyPrapration?>
         get() = _getDailyPreparation
@@ -72,11 +68,15 @@ class EditDailyPViewModel (application: Application) : AndroidViewModel(applicat
             }
         }
     }
-    fun editDailyPreparation( WorkersTypesList: Map<Long, Int>,
-                             equipmentList: Map<Long, Int>)  {
+
+    fun editDailyPreparation(
+        WorkersTypesList: Map<Long, Int>,
+        equipmentList: Map<Long, Int>
+    ) {
         _loading.postValue(View.VISIBLE)
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result = modelRepository.editDailyPreparation(WorkersTypesList,equipmentList)) {
+            when (val result =
+                modelRepository.editDailyPreparation(WorkersTypesList, equipmentList)) {
                 is Result.Success -> {
                     _loading.postValue(View.GONE)
                     Log.i("editDailyPreparation:", "${result.data}")
@@ -99,17 +99,19 @@ class EditDailyPViewModel (application: Application) : AndroidViewModel(applicat
         }
 
     }
-    fun addDailyPreparation(dailyPreparation: DailyPreparation){
+
+    fun addDailyPreparation(dailyPreparation: DailyPreparation) {
         viewModelScope.launch(Dispatchers.IO) {
             modelRepository.insertDailyPreparation(dailyPreparation)
         }
     }
 
-    fun getDailyPreparationByServiceID(serviceTypeID: String,date :String){
+    fun getDailyPreparationByServiceID(serviceTypeID: String, date: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            modelRepository.getDailyPreparation_By_ServiceTypeID(serviceTypeID,date)
+            modelRepository.getDailyPreparation_By_ServiceTypeID(serviceTypeID, date)
         }
     }
+
     fun setEquipmentDeletedItem(equipmentItem: PrepEquipments) {
         _equipmentsDeleteItem.value = equipmentItem
     }

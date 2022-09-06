@@ -8,7 +8,7 @@ class SettingViewModel(application: Application) : AndroidViewModel(application)
     private val modelRepository: ModelRepo = ModelRepo(application)
 
     fun logout() {
-     modelRepository.logout()
+        modelRepository.logout()
     }
 
 }

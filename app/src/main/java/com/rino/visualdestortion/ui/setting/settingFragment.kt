@@ -21,7 +21,7 @@ class settingFragment : Fragment() {
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             @SuppressLint("ResourceType")
             override fun handleOnBackPressed() {
-              requireActivity().finish()
+                requireActivity().finish()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)

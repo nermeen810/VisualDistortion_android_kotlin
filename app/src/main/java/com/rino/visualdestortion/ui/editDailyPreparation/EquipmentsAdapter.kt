@@ -50,7 +50,7 @@ class EquipmentsAdapter(private var itemsList: ArrayList<PrepEquipments>, privat
              customTwoButtonsDialog(itemsList[position],position)
             }
         }
-        fun customTwoButtonsDialog(equipmentItem: PrepEquipments, position: Int) {
+        private fun customTwoButtonsDialog(equipmentItem: PrepEquipments, position: Int) {
             val builder = AlertDialog.Builder(context!!)
             builder.setTitle(R.string.app_name)
 
@@ -65,8 +65,6 @@ class EquipmentsAdapter(private var itemsList: ArrayList<PrepEquipments>, privat
                 viewModel.setEquipmentDeletedItem(itemsList[position])
                 itemsList.remove(itemsList[position])
                 notifyDataSetChanged()
-//                updateItems(itemsList)
-//                notifyDataSetChanged()
 
             }
             // Create the AlertDialog

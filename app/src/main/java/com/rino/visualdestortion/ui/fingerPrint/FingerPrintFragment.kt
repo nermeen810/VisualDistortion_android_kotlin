@@ -25,11 +25,11 @@ import com.rino.visualdestortion.R
 
 class FingerPrintFragment : Fragment() {
     private lateinit var viewModel: FingerPrintViewModel
-    private var  cancellationSignal: CancellationSignal? = null
-    private val  authenticationCallback: BiometricPrompt.AuthenticationCallback
+    private var cancellationSignal: CancellationSignal? = null
+    private val authenticationCallback: BiometricPrompt.AuthenticationCallback
         get() =
             @RequiresApi(Build.VERSION_CODES.P)
-            object: BiometricPrompt.AuthenticationCallback() {
+            object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
                     super.onAuthenticationError(errorCode, errString)
                     notifyErrorToUser(getString(R.string.FP_error))
@@ -37,31 +37,33 @@ class FingerPrintFragment : Fragment() {
                     viewModel.logout()
                     navgateToLogin()
                 }
+
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?) {
                     super.onAuthenticationSucceeded(result)
                     notifyMsgToUser(getString(R.string.FP_success))
-//                    if(findNavController().currentDestination?.id == R.id.loginFragment2)
-                    if(viewModel.isLogin())
-                    {
+                    if (viewModel.isLogin()) {
                         navgateToHome()
-                    }
-                    else {
+                    } else {
                         navgateToLogin()
                     }
                 }
             }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
-    private  fun  navgateToLogin(){
+
+    private fun navgateToLogin() {
         val action = FingerPrintFragmentDirections.actionFingerPrintToLogin()
         findNavController().navigate(action)
     }
-    private  fun  navgateToHome(){
+
+    private fun navgateToHome() {
         val action = FingerPrintFragmentDirections.actionFingerPrintToServices()
         findNavController().navigate(action)
     }
+
     private fun enablePermission() {
         val intent = Intent(Settings.ACTION_FINGERPRINT_ENROLL)
         startActivity(intent)
@@ -88,14 +90,21 @@ class FingerPrintFragment : Fragment() {
         val biometricPrompt = BiometricPrompt.Builder(requireActivity())
             .setTitle("Title of Prompt")
             .setDescription("Uses FP")
-            .setNegativeButton("Cancel", requireActivity().mainExecutor, DialogInterface.OnClickListener { dialog, which ->
-                notifyErrorToUser(getString(R.string.Authentication_Cancelled))
-                viewModel.logout()
-                navgateToLogin()
-            }).build()
+            .setNegativeButton(
+                "Cancel",
+                requireActivity().mainExecutor,
+                DialogInterface.OnClickListener { dialog, which ->
+                    notifyErrorToUser(getString(R.string.Authentication_Cancelled))
+                    viewModel.logout()
+                    navgateToLogin()
+                }).build()
 
         // start the authenticationCallback in mainExecutor
-        biometricPrompt.authenticate(getCancellationSignal(), requireActivity().mainExecutor, authenticationCallback)
+        biometricPrompt.authenticate(
+            getCancellationSignal(),
+            requireActivity().mainExecutor,
+            authenticationCallback
+        )
         return inflater.inflate(R.layout.fragment_finger_print, container, false)
 
     }
@@ -107,13 +116,16 @@ class FingerPrintFragment : Fragment() {
                     R.color.teal
                 )
             )
-            .setActionTextColor(resources.getColor(R.color.white)).setAction(getString(R.string.dismiss))
+            .setActionTextColor(resources.getColor(R.color.white))
+            .setAction(getString(R.string.dismiss))
             {
             }.show()
     }
+
     private fun notifyMsgToUser(message: String) {
-        Toast.makeText(requireContext(),message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
     private fun getCancellationSignal(): CancellationSignal {
         cancellationSignal = CancellationSignal()
         cancellationSignal?.setOnCancelListener {
@@ -123,15 +135,21 @@ class FingerPrintFragment : Fragment() {
         }
         return cancellationSignal as CancellationSignal
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun checkBiometricSupport(): Boolean {
-        val keyguardManager = requireActivity().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        val keyguardManager =
+            requireActivity().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         if (!keyguardManager.isDeviceSecure) {
             notifyMsgToUser("Fingerprint authentication has not been enabled in settings")
             enablePermission()
             return false
         }
-        if (ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.USE_BIOMETRIC) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                android.Manifest.permission.USE_BIOMETRIC
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             notifyMsgToUser("Fingerprint Authentication Permission is not enabled")
             requestPermission()
             return false

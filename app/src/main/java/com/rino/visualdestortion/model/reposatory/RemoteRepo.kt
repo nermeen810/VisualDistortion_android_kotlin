@@ -21,38 +21,47 @@ import retrofit2.http.Header
 
 interface RemoteRepo {
 
-      suspend fun login(loginRequest: LoginRequest?): Result<LoginResponse?>
+    suspend fun login(loginRequest: LoginRequest?): Result<LoginResponse?>
 
-      suspend fun refreshToken(refreshTokenRequest: RefreshTokenRequest?): Result<LoginResponse?>
+    suspend fun refreshToken(refreshTokenRequest: RefreshTokenRequest?): Result<LoginResponse?>
 
-      suspend fun requestOTP(requestOTP: RequestOTP): Result<ResponseOTP?>
+    suspend fun requestOTP(requestOTP: RequestOTP): Result<ResponseOTP?>
 
-      suspend fun resetPassword(resetPasswrdRequest: ResetPasswordRequest): Result<ResponseOTP?>
+    suspend fun resetPassword(resetPasswrdRequest: ResetPasswordRequest): Result<ResponseOTP?>
 
-      suspend fun setServiceForm(serviceForm: FormData): Result<QRCode?>
+    suspend fun setServiceForm(serviceForm: FormData): Result<QRCode?>
 
-      suspend fun getServiceForm(): Result<AddServiceResponse?>
+    suspend fun getServiceForm(): Result<AddServiceResponse?>
 
-      suspend fun getHomeData(): Result<HomeServicesResponse?>
+    suspend fun getHomeData(): Result<HomeServicesResponse?>
 
-      suspend fun getHistoryData(): Result<AllHistoryResponse?>
+    suspend fun getHistoryData(): Result<AllHistoryResponse?>
 
-      suspend fun getFilteredHistory(serviceTypeId: Int, period:String): Result<FilteredHistoryResponse?>
+    suspend fun getFilteredHistory(
+        serviceTypeId: Int,
+        period: String
+    ): Result<FilteredHistoryResponse?>
 
-      suspend fun getHistoryDataByService(serviceTypeId: Int,period:String ,pageNumber:Int ): Result<HistoryByServiceIdResponse?>
+    suspend fun getHistoryDataByService(
+        serviceTypeId: Int,
+        period: String,
+        pageNumber: Int
+    ): Result<HistoryByServiceIdResponse?>
 
-      suspend fun searchHistoryDataByService(searchRequest: SearchRequest): Result<SearchResponse?>
+    suspend fun searchHistoryDataByService(searchRequest: SearchRequest): Result<SearchResponse?>
 
-      suspend fun isDailyPrepared(): Result<CheckDailyPreparationResponse?>
+    suspend fun isDailyPrepared(): Result<CheckDailyPreparationResponse?>
 
-      suspend fun setDailyPreparation(WorkersTypesList : Map<Long, Int>
-                                      , equipmentList : Map<Long, Int>):Result<Void?>
+    suspend fun setDailyPreparation(
+        WorkersTypesList: Map<Long, Int>, equipmentList: Map<Long, Int>
+    ): Result<Void?>
 
-      suspend fun getCreateDailyPreparation(): Result<GetDailyPraprationData?>
+    suspend fun getCreateDailyPreparation(): Result<GetDailyPraprationData?>
 
-      suspend fun getDailyPreparation(): Result<TodayDailyPrapration?>
+    suspend fun getDailyPreparation(): Result<TodayDailyPrapration?>
 
-      suspend fun editDailyPreparation(WorkersTypesList : Map<Long, Int>
-                                      , equipmentList : Map<Long, Int>):Result<Void?>
+    suspend fun editDailyPreparation(
+        WorkersTypesList: Map<Long, Int>, equipmentList: Map<Long, Int>
+    ): Result<Void?>
 
 }

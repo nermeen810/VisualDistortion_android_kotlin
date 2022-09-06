@@ -16,8 +16,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SubItemFilteredHistoryAdapter (private var historyList: ArrayList<ServiceData>,
-                                      private val historyViewModel: FilteredHistoryViewModel, private val context: Context
+class SubItemFilteredHistoryAdapter(
+    private var historyList: ArrayList<ServiceData>,
+    private val historyViewModel: FilteredHistoryViewModel, private val context: Context
 ) : RecyclerView.Adapter<SubItemFilteredHistoryAdapter.HistoryViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -39,9 +40,10 @@ class SubItemFilteredHistoryAdapter (private var historyList: ArrayList<ServiceD
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        holder.binding.serviceNumValue.text = Constants.convertNumsToArabic(historyList[position].serviceNumber.toString())
-        holder.binding.dateFromTxt.text     = Constants.convertNumsToArabic(historyList[position].createdDate?:"")
-        //      holder.binding.timeTxt.text         = historyList[position].createdDate?: "00/00/00 00:00".split(" ").toList()[1]
+        holder.binding.serviceNumValue.text =
+            Constants.convertNumsToArabic(historyList[position].serviceNumber.toString())
+        holder.binding.dateFromTxt.text =
+            Constants.convertNumsToArabic(historyList[position].createdDate ?: "")
         holder.binding.card.setOnClickListener {
             historyViewModel.navToServiceDetails(historyList[position])
         }
@@ -49,9 +51,13 @@ class SubItemFilteredHistoryAdapter (private var historyList: ArrayList<ServiceD
             showDialog(historyList[position].fullLocation)
         }
         holder.binding.locationTxt.setOnClickListener {
-            navToLocationInMap(historyList[position].latitude?:"0",historyList[position].longtitude?:"0")
+            navToLocationInMap(
+                historyList[position].latitude ?: "0",
+                historyList[position].longtitude ?: "0"
+            )
         }
     }
+
     fun showDialog(address: String?) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle(R.string.app_name)
@@ -67,7 +73,7 @@ class SubItemFilteredHistoryAdapter (private var historyList: ArrayList<ServiceD
         alertDialog.show()
     }
 
-    fun navToLocationInMap(lat : String, long :String){
+    fun navToLocationInMap(lat: String, long: String) {
         val uri = "http://maps.google.com/maps?q=loc:${lat},${long}"
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         context.startActivity(intent)
@@ -78,10 +84,12 @@ class SubItemFilteredHistoryAdapter (private var historyList: ArrayList<ServiceD
         historyList.addAll(newList)
         notifyDataSetChanged()
     }
+
     fun clearList() {
         historyList.clear()
         notifyDataSetChanged()
     }
+
     inner class HistoryViewHolder(val binding: SubFilteredHistoryItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 

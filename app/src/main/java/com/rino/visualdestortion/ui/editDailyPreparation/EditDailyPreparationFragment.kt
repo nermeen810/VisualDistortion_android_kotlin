@@ -58,10 +58,12 @@ class EditDailyPreparationFragment : Fragment() {
 
 
     }
+
     override fun onResume() {
         super.onResume()
         (activity as MainActivity).bottomNavigation.isGone = true
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -90,11 +92,9 @@ class EditDailyPreparationFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = workerTypesAdapter
         }
-        if(NetworkConnection.checkInternetConnection(requireContext())){
+        if (NetworkConnection.checkInternetConnection(requireContext())) {
             viewModel.getTodayPreparation()
-        }
-        else
-        {
+        } else {
             showMessage(getString(R.string.no_internet))
         }
         if (getArguments() != null) {
@@ -105,17 +105,26 @@ class EditDailyPreparationFragment : Fragment() {
 
         }
         binding.saveButton.setOnClickListener {
-            if(validateData()) {
-                val date = DateFormat.getDateInstance().format(Calendar.getInstance().time).toString()
-                viewModel.addDailyPreparation(DailyPreparation(serviceTypeId, date ,equipmentsAdapter.getEquipmentMap(),workerTypesAdapter.getWorkerTypesMap()))
+            if (validateData()) {
+                val date =
+                    DateFormat.getDateInstance().format(Calendar.getInstance().time).toString()
+                viewModel.addDailyPreparation(
+                    DailyPreparation(
+                        serviceTypeId,
+                        date,
+                        equipmentsAdapter.getEquipmentMap(),
+                        workerTypesAdapter.getWorkerTypesMap()
+                    )
+                )
                 //   Toast.makeText(requireContext(),"item : ${viewModel.getDailyPreparationByServiceID(serviceTypeId).toString()}",Toast.LENGTH_SHORT).show()
-                Log.e("editWorkerTypes: ",workerTypesAdapter.getWorkerTypesMap().toString())
-                Log.e("editEquipment: ",equipmentsAdapter.getEquipmentMap().toString())
-                if(NetworkConnection.checkInternetConnection(requireContext())){
-                    viewModel.editDailyPreparation(workerTypesAdapter.getWorkerTypesMap(),equipmentsAdapter.getEquipmentMap())
-                }
-                else
-                {
+                Log.e("editWorkerTypes: ", workerTypesAdapter.getWorkerTypesMap().toString())
+                Log.e("editEquipment: ", equipmentsAdapter.getEquipmentMap().toString())
+                if (NetworkConnection.checkInternetConnection(requireContext())) {
+                    viewModel.editDailyPreparation(
+                        workerTypesAdapter.getWorkerTypesMap(),
+                        equipmentsAdapter.getEquipmentMap()
+                    )
+                } else {
                     showMessage(getString(R.string.no_internet))
                 }
             }
@@ -180,7 +189,6 @@ class EditDailyPreparationFragment : Fragment() {
     }
 
 
-
     private fun observeGetDailyPreparation() {
         viewModel.getDailyPreparation.observe(viewLifecycleOwner) {
             it.let {
@@ -200,8 +208,7 @@ class EditDailyPreparationFragment : Fragment() {
     private fun observeEditDailyPreparation() {
         viewModel.editDailyPreparation.observe(viewLifecycleOwner) {
             it?.let {
-                if(it)
-                {
+                if (it) {
                     navigateToHome()
                 }
             }
@@ -223,12 +230,12 @@ class EditDailyPreparationFragment : Fragment() {
         var index = 0
         binding.equipmentsTextView.setText(R.string.select)
 //        for (equipment in addServiceResponse.equipment!!) {
-        Log.e("dailyPreparation,equipmentTypes",dailyPreparation.equipmentTypes.toString())
+        Log.e("dailyPreparation,equipmentTypes", dailyPreparation.equipmentTypes.toString())
         for (equipment in dailyPreparation.equipmentTypes) {
             if (!isEquipmentListContainsItem(equipment.id)) {
                 equipmentList.add(equipment.name.toString())
                 equipmentsMap[equipment.name] = equipment.id
-                Log.e("iteemInEquipmentsMap",equipmentsMap[equipment.name].toString())
+                Log.e("iteemInEquipmentsMap", equipmentsMap[equipment.name].toString())
                 index++
             }
 
@@ -241,11 +248,11 @@ class EditDailyPreparationFragment : Fragment() {
         binding.equipmentsTextView.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val selectedItem = parent.getItemAtPosition(position).toString()
-                Log.e("position","${position} , ${selectedItem}")
-                Log.e("iteeeeem",equipmentsMap[selectedItem].toString())
+                Log.e("position", "${position} , ${selectedItem}")
+                Log.e("iteeeeem", equipmentsMap[selectedItem].toString())
                 var item =
                     equipmentsMap[selectedItem]?.let { PrepEquipments(it, selectedItem, 1) }
-                Log.e("iteeeeem",item.toString())
+                Log.e("iteeeeem", item.toString())
                 if (item != null) {
                     equipmentsCountList.add(item)
                     equipmentList.remove(item.name)
@@ -257,11 +264,9 @@ class EditDailyPreparationFragment : Fragment() {
     }
 
 
-    private fun isEquipmentListContainsItem(id:Int): Boolean {
-        for (equipment in dailyPreparation.prepEquipments)
-        {
-            if(id==equipment.id)
-            {
+    private fun isEquipmentListContainsItem(id: Int): Boolean {
+        for (equipment in dailyPreparation.prepEquipments) {
+            if (id == equipment.id) {
                 return true
             }
         }
@@ -274,7 +279,7 @@ class EditDailyPreparationFragment : Fragment() {
         binding.workersTypeTextView.setText(R.string.select)
 //        for (workerType in addServiceResponse.workerTypes!!) {
         for (workerType in dailyPreparation.workerTypes) {
-            if(!isWorkerTypeListContainsItem(workerType.id)) {
+            if (!isWorkerTypeListContainsItem(workerType.id)) {
                 workersTypeList.add(workerType.name.toString())
                 workersTypeMap[workerType.name] = workerType.id
                 index++
@@ -289,10 +294,10 @@ class EditDailyPreparationFragment : Fragment() {
         binding.workersTypeTextView.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val selectedItem = parent.getItemAtPosition(position).toString()
-                Log.e("iteeeeem",workersTypeMap[selectedItem].toString())
+                Log.e("iteeeeem", workersTypeMap[selectedItem].toString())
                 var item =
-                    workersTypeMap[selectedItem]?.let { PrepWorkers(it,selectedItem,  1) }
-                Log.e("iteeeeem",item.toString())
+                    workersTypeMap[selectedItem]?.let { PrepWorkers(it, selectedItem, 1) }
+                Log.e("iteeeeem", item.toString())
                 if (item != null) {
                     workerTypesCountList.add(item)
                     workersTypeList.remove(item.name)
@@ -304,10 +309,8 @@ class EditDailyPreparationFragment : Fragment() {
     }
 
     private fun isWorkerTypeListContainsItem(id: Int): Boolean {
-        for (workerType in dailyPreparation.prepWorkers)
-        {
-            if(id==workerType.id)
-            {
+        for (workerType in dailyPreparation.prepWorkers) {
+            if (id == workerType.id) {
                 return true
             }
         }
@@ -321,8 +324,7 @@ class EditDailyPreparationFragment : Fragment() {
         if (equipmentsCountList.isEmpty()) {
             binding.equipmentsTextInputLayout.error = getString(R.string.required_field)
             flagEquipment = false
-        }
-        else{
+        } else {
             binding.equipmentsTextInputLayout.error = null
             binding.equipmentsTextInputLayout.isErrorEnabled = false
             flagEquipment = true
@@ -330,14 +332,14 @@ class EditDailyPreparationFragment : Fragment() {
         if (workerTypesCountList.isEmpty()) {
             binding.workersTypeTextInputLayout.error = getString(R.string.required_field)
             flagworkerType = false
-        }
-        else{
+        } else {
             binding.workersTypeTextInputLayout.error = null
             binding.workersTypeTextInputLayout.isErrorEnabled = false
             flagEquipment = true
         }
         return (flagEquipment && flagworkerType)
     }
+
     private fun showMessage(msg: String) {
         lifecycleScope.launchWhenResumed {
             Snackbar.make(requireView(), msg, Snackbar.LENGTH_INDEFINITE)
@@ -352,8 +354,10 @@ class EditDailyPreparationFragment : Fragment() {
                 }.show()
         }
     }
+
     private fun registerConnectivityNetworkMonitor() {
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val builder = NetworkRequest.Builder()
         connectivityManager.registerNetworkCallback(builder.build(),
             object : ConnectivityManager.NetworkCallback() {
@@ -361,7 +365,7 @@ class EditDailyPreparationFragment : Fragment() {
                     super.onAvailable(network)
                     if (activity != null) {
                         activity!!.runOnUiThread {
-                         //   showMessage(getString(R.string.internet))
+                            //   showMessage(getString(R.string.internet))
                         }
                     }
                 }

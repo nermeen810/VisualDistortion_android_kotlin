@@ -54,7 +54,7 @@ class WorkerTypesAdapter(private var itemsList: ArrayList<PrepWorkers>, private 
         }
     }
 
-    fun customTwoButtonsDialog(equipmentItem: PrepWorkers, position: Int) {
+    private fun customTwoButtonsDialog(equipmentItem: PrepWorkers, position: Int) {
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle(R.string.app_name)
 
